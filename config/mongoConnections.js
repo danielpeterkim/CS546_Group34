@@ -1,11 +1,5 @@
 import {MongoClient} from 'mongodb';
-const settings = {
-  mongoConfig: {
-    serverUrl: 'mongodb://localhost:27017/',
-    database: 'movies'
-  }
-};
-const mongoConfig = settings.mongoConfig;
+import {mongoConfig} from './settings.js';
 
 let _connection = undefined;
 let _db = undefined;
