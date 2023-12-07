@@ -72,6 +72,7 @@ router.route('/city').get(async (req, res) => {
     return res.redirect('/login');
   }
   const currentTime = new Date().toLocaleTimeString();
+  //added all the player database info for use in city. you can access these in city by calling on their variable names
   res.render('city',{
     username: req.session.player.username.trim(),
     xp: req.session.player.xp,
