@@ -24,10 +24,12 @@ app.use((req, res, next) => {
   const route = req.originalUrl;
   const isAuthenticated = req.session.player ? "Authenticated Player" : "Non-Authenticated Player";
   console.log(`[${timestamp}]: ${method} ${route} (${isAuthenticated})`);
-
+// if the user is not signed in (cookie wise) and if the current page isn't login or register than you go to login
   if (!req.session.player && (route !== '/login' && route !== '/register')) {
       return res.redirect('/login');
   } else if (req.session.player  && route !== '/city'  && route !== '/logout') {
+// if the user is signed in and the current page is not city or logout, then you go to city. This is so that players do not need to log in if cookie exist
+// You will need to add to this if statement for each route the player can access (pvp, fighting page, etc.)
       return res.redirect('/city');
   }
   next();
