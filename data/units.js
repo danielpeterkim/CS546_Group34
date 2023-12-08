@@ -100,14 +100,14 @@ export const createUnit = async (
     };
     const armyCollection = await army_units();
     const insertInfo = await armyCollection.insertOne(nUnit);
-    if (!insertInfo.acknowledged || !insertInfo.insertedId) throw 'Could not add building.';
+    if (!insertInfo.acknowledged || !insertInfo.insertedId) throw 'Could not add unit.';
     return {insertedUnit: true};
 };
 
 export const getAllUnits = async () => {
     const armyCollection = await army_units();
     let armyList = await armyCollection.find({}, {projection: {_id: 0}}).toArray();
-    if (!armyList) throw 'Error: Could not get all buildings';
+    if (!armyList) throw 'Error: Could not get all units';
     return armyList;
 };
 
