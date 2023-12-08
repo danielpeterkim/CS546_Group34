@@ -19,3 +19,4 @@ const getCollectionFn = (collection) => {
 NOTE: YOU WILL NEED TO CHANGE THE CODE BELOW AND UNCOMMENT IT TO HAVE THE COLLECTION(S) REQUIRED BY THE ASSIGNMENT */
 
 export const players = getCollectionFn('players');
+export const buildings = getCollectionFn('buildings');
