@@ -65,18 +65,23 @@ export const createBuilding = async (
     let prod_g = resourceProduction.gold_prod;
     let prod_w = resourceProduction.wood_prod;
     let prod_s = resourceProduction.stone_prod;
+    let prod_d = resourceProduction.amber_prod;
     if (prod_g === null || prod_g === undefined) throw "Error: Gold production is missing.";
     if (prod_w === null || prod_w === undefined) throw "Error: Wood production is missing.";
     if (prod_s === null || prod_s === undefined) throw "Error: Stone production is missing.";
+    if (prod_d === null || prod_d === undefined) throw "Error: Amber production is missing.";
     if (typeof prod_g !== 'number') throw "Error: Gold production is not a number.";
     if (!Number.isInteger(prod_g)) throw "Error: Gold production is not an integer.";
     if (prod_g < 0) throw "Error: Gold production cannot be negative.";
     if (typeof prod_w !== 'number') throw "Error: Wood production is not a number.";
     if (!Number.isInteger(prod_w)) throw "Error: Wood production is not an integer.";
     if (prod_w < 0) throw "Error: Wood production cannot be negative.";
-    if (typeof cost_s !== 'number') throw "Error: Stone production is not a number.";
+    if (typeof prod_s !== 'number') throw "Error: Stone production is not a number.";
     if (!Number.isInteger(prod_s)) throw "Error: Stone production is not an integer.";
     if (prod_s < 0) throw "Error: Stone production cannot be negative.";
+    if (typeof prod_d !== 'number') throw "Error: Amber production is not a number.";
+    if (!Number.isInteger(prod_d)) throw "Error: Amber production is not an integer.";
+    if (prod_d < 0) throw "Error: Amber production cannot be negative.";
 
     if (typeof icon !== 'string') throw "Error: Image URL must be a string.";
     if (!isURL(icon)) throw "Error: The image link is an invalid URL.";
