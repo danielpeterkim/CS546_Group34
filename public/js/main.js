@@ -8,10 +8,17 @@
     let updates = 0;
     let newUpdates = 0;
 
-    let resources = {gold: 0, wood: 0, stone: 0, amber: 0};
+    let resources = {gold: 80, wood: 0, stone: 0, amber: 0};
     let resourceProduction = {gold: 1, wood: 0, stone: 0, amber: 0};
+    let buildingsOwned = {};
 
-    let updateResources = () => {
+    let showResources = () => {
+        $('#resourceText').text(`gold: ${resources.gold} (+${resourceProduction.gold}), wood: ${resources.wood} (+${resourceProduction.wood}), stone: ${resources.stone} (+${resourceProduction.stone}), amber: ${resources.amber} (+${resourceProduction.amber})`);
+    }
+
+    showResources();
+
+    let passiveResourceUpdate = () => {
         console.log('updating');
         $(document).ready(function(){
             currentTime = Date.now();
@@ -19,13 +26,33 @@
             if (newUpdates > updates) {
                 for (const [k, v] of Object.entries(resources)) {
                     resources[k] += (resourceProduction[k] * (newUpdates-updates));
-                    $('#resourceText').text(`gold: ${resources.gold}, wood: ${resources.wood}, stone: ${resources.stone}, amber: ${resources.amber}`);
                 }
                 updates = newUpdates;
+                showResources();
             }
         })
     }
 
-    setInterval(updateResources, timeInterval);
+    let buyCoinGenerator = () => {
+        console.log('bought');
+        if (resources.gold >= 40) {
+            resources.gold -= 40;
+            if (!('coinGenerator' in buildingsOwned)) {
+                buildingsOwned.coinGenerator = 1;
+            } else {
+                buildingsOwned.coinGenerator += 1;
+            }
+            resourceProduction.gold += 1;
+
+            $('#buildingText').text(`Coin Generator: ${buildingsOwned.coinGenerator}`);
+            showResources();
+        }
+    }
+
+    setInterval(passiveResourceUpdate, timeInterval);
+
+    $(document).ready(function(){
+        $('#buyCoinGeneratorButton').click(buyCoinGenerator);
+    })
 
 })(window.jQuery);
