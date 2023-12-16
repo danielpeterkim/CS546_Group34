@@ -92,6 +92,33 @@ router.route('/city').get(async (req, res) => {
   }
 )
 });
+router.route('/tasks').get(async (req, res) => {
+  if(!req.session.player){
+    return res.redirect('/login');
+  }
+  res.render('tasks', {
+    tasks: req.session.player.tasks
+  })
+});
+router.route('/auth_routes/tasks/complete/:id').post((req, res) => {
+  const tasks = req.session.player.tasks;
+  for (let i = 0; i < tasks.length; i++){
+    let current = tasks[i];
+    if (current.name == req.params.id){
+      current.accepted = true;
+      const r = current.reward;
+      req.session.player.tasks[i] = current;
+      req.session.player.amber += r;
+      req.session.player.gold +=r;
+      req.session.player.xp +=r;
+      req.session.player.wood +=r;
+      req.session.player.stone +=r;
+      break;
+    }
+  }
+  const updatedData = finishToDo(parseInt(req.params.id));
+  res.render('tasks', {layout: null, ...updatedData});
+});
 router.route('/error').get(async (req, res) => {
   res.status(500).render('error');
 });

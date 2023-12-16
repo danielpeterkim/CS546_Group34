@@ -31,7 +31,7 @@ export const registerPlayer = async (
     name: "Task 1",
     description: "Login",
     complete: false,
-    not_complete: true,
+    accepted: false,
     complete_date: undefined,
     reward: undefined
   };
@@ -39,6 +39,7 @@ export const registerPlayer = async (
     name: "Task 2",
     description: "Buy a Building",
     complete: false,
+    accepted: false,
     complete_date: undefined,
     reward: undefined
   };
@@ -46,6 +47,7 @@ export const registerPlayer = async (
     name: "Task 3",
     description: "Attack Another Player",
     complete: false,
+    accepted: false,
     complete_date: undefined,
     reward: undefined
   };
@@ -100,7 +102,6 @@ export const loginPlayer = async (username, password) => {
         if(y > c_date.getFullYear() || y == c_date.getFullYear() && m > c_date.getMonth() || y == c_date.getFullYear() && m == c_date.getMonth() && d > c_date.getDate()){
           task.complete_date = undefined;
           task.complete = false;
-          task.not_complete = true;
         }
       }
     }
@@ -108,9 +109,8 @@ export const loginPlayer = async (username, password) => {
     task.reward = r;
   });
   let t1 = tasks[0];
-  if(t1.not_complete){
+  if(!t1.complete){
     t1.complete = true;
-    t1.not_complete = false;
     t1.complete_date = date;
   };
   existingPlayer.tasks = tasks;

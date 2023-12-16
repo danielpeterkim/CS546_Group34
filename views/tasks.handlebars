@@ -2,14 +2,20 @@
 <h2>You will earn {{ reward }} XP and {{ reward }} of every resource for each task you complete! </h2>
 
 <body>
-    {{#each Tasks}} 
-        <h3>{{ name }}</h3>
-        <p>{{ description }}</p>
-        {{#if notComplete }}
-        <a class="finishItem" data-id="{{id}}">Finish</a>
-        {{/if}}
-        {{#if complete }}
-        <em>This task has been completed</em>
-        {{/if}}
-    {{/each}}
+    <div id = 'task-area'>
+        {{#each tasks}} 
+            <h3>{{ name }}</h3>
+            <p>{{ description }}</p>
+            {{#if accepted }}
+            <em>This task has been completed</em>
+            {{/if}}
+            {{#elif complete }}
+            <a class="finishTask" data-id="{{name}}">Accept</a>
+            {{/elif}}
+            
+        {{/each}}
+    </div>
+    <script src = "/public/js/task_accept.js"></script>
 </body>
+
+<a href="/city">Return to City</a>
