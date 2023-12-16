@@ -112,11 +112,19 @@ export const buyBuilding = async(username, building) => {
 
   //checking if buying is valid
   const buildingBuyingInfo = await buildings.findOne({ buildingName: building});
+  if(!buildingBuyingInfo){
+    throw new Error("Building you are trying to buy does not exist");
+  }
   const buildingCostOfBuying = buildingBuyingInfo.buildingCost;
   // cost of buying should scale with building amount, this will need to be updated for balance
-  const costScale = 1;
+  //if there exist more than 0 buildings, increase cost of buildings
+  const costScale = .3;
   if(existingPlayer.buildings[building]){
     costScale = costScale * existingPlayer.buildings[building];
+  }
+  else{
+    //else, remains basic cost
+    costScale = 0;
   }
 
   if(playerGold - (buildingCostOfBuying.gold + buildingCostOfBuying.gold * costScale) < 0 || playerWood - buildingCostOfBuying.wood < 0 || playerStone - buildingCostOfBuying.stone < 0){
