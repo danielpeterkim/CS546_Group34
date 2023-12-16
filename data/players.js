@@ -91,6 +91,7 @@ export const loginPlayer = async (username, password) => {
   const m = date.getMonth();
   const y = date.getFullYear();
   let tasks = existingPlayer.tasks
+  const level = existingPlayer.level
   tasks.forEach(task => {
     if (task.complete){
       if(task.complete_date !== undefined){
@@ -101,6 +102,8 @@ export const loginPlayer = async (username, password) => {
         }
       }
     }
+    const r = level * 10;
+    task.reward = r;
   });
   let t1 = tasks[0];
   if(!t1.complete){
