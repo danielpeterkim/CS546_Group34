@@ -43,3 +43,15 @@ form label {
     margin-bottom: 5px;
     font-weight: bold;
 }
+
+.buildings {
+    border: black 1px solid;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.no-buildings {
+    border: black 1px solid;
+    padding: 10px;
+    border-radius: 5px;
+}

@@ -1,12 +1,28 @@
 <body>
+  <h1>City</h1>
+  
+  {{#if buildings}}
+    <div class="buildings">
+      {{#each buildings}}
+        <div class="building">
+          <img src="{{icon}}" alt="{{buildingName}}">
+          <p>{{buildingDescription}}</p>
+          <!-- Additional building information display -->
+        </div>
+      {{/each}}
+    </div>
+  {{else}}
+    <div class="no-buildings">
+      <h2>Welcome to your city!</h2>
+      <p>You currently don't have any buildings.</p>
+      <p>Your first building is the Castle.</p>
+    </div>
+  {{/if}}
+  
+  <p id="resourceText">gold: 0, wood: 0, stone: 0, amber: 0</p>
+  <a href="/logout">Logout</a>
 
-<h1>City</h1>
-<p>Placeholder city.</p>
-<p id="resourceText">gold: 0, wood: 0, stone: 0, amber: 0</p>
-<a href="/logout">Logout</a>
-
-<script src="https://code.jquery.com/jquery-2.2.4.min.js"
-    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-<script src="../public/js/main.js"></script>
-
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+      integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+  <script src="../public/js/main.js"></script>
 </body>
