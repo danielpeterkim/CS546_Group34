@@ -1,6 +1,7 @@
 //import express, express router as shown in lecture code
 import express from 'express';
 import * as playerHelper from "../data/players.js";
+import xss from 'xss';
 
 const router = express.Router();
 
@@ -20,7 +21,10 @@ router
   })
   .post(async (req, res) => {
     try {
-      const {usernameInput, passwordInput, confirmPasswordInput} = req.body;
+      //const {usernameInput, passwordInput, confirmPasswordInput} = req.body;
+      const usernameInput = xss(req.body.usernameInput);
+      const passwordInput = xss(req.body.passwordInput);
+      const confirmPasswordInput = xss(req.body.confirmPasswordInput);
       console.log(passwordInput);
       if(!usernameInput || !passwordInput){
         throw new Error("Username and/or password was not supplied");
@@ -51,7 +55,9 @@ router
     res.render('login');  })
   .post(async (req, res) => {
     try {
-      const{usernameInput, passwordInput} = req.body;
+      //const{usernameInput, passwordInput} = req.body;
+      const usernameInput = xss(req.body.usernameInput);
+      const passwordInput= xss(req.body.passwordInput);
       if(!usernameInput || !passwordInput){
         throw new Error("Username and/or password was not supplied");
       }
