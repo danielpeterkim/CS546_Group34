@@ -19,28 +19,21 @@
     </p>
 </div>
 <div class="buildingsOwned">
-    {{#each buildings}}
-        <p>{{@key}}: {{this}}</p>
-    {{/each}}
+    {{#if (isEmptyObject buildings)}}
+        <p id="noBuildingsText">You have no buildings.</p>
+    {{else}}
+        {{#each orderedBuildingsList}}
+            {{#if (propertyExists ../buildings @key)}}
+                <div class="buildingRow">
+                    <img src="{{this.icon}}" alt="{{@key}}" />
+                    <span>{{@key}}</span>
+                    <span>{{this.buildingDescription}}</span>
+                    <span>Count: {{lookup ../buildings @key}}</span>
+                </div>
+            {{/if}}
+        {{/each}}
+    {{/if}}
 </div>
-{{#if (isEmptyObject buildings)}}
-  <div class="buildingsOwned">
-    <p id="noBuildingsText">You have no buildings.</p>
-  </div>
-{{else}}
-  <div class="buildingsOwned">
-    {{#each orderedBuildingsList}}
-      {{#if (propertyExists ../buildings @key)}}
-        <div class="buildingRow">
-          <img src="{{this.icon}}" alt="{{@key}}" />
-          <span>{{@key}}</span>
-          <span>{{this.buildingDescription}}</span>
-          <span>Count: {{lookup ../buildings @key}}</span>
-        </div>
-      {{/if}}
-    {{/each}}
-  </div>
-{{/if}}
 
 <div id="buildings">
 <button id="buy-gold-generator">Buy Gold Generator</button>

@@ -101,10 +101,10 @@
     }
 
     function updateResources(playerData) {
-        resources.gold = playerData.gold;
-        resources.wood = playerData.wood;
-        resources.stone = playerData.stone;
-        resources.amber = playerData.amber;
+        resources.gold = Math.floor(playerData.gold);
+        resources.wood = Math.floor(playerData.wood);
+        resources.stone = Math.floor(playerData.stone);
+        resources.amber = Math.floor(playerData.amber);
         er.hidden = true;
         $('#gold').text(resources.gold);
         $('#wood').text(resources.wood);
@@ -142,6 +142,7 @@
             }
         });
     }
+    
 
     $(document).ready(function () {
         $('#buy-gold-generator').click(function () { handleBuildingAction('buy-building', 'Gold Generator'); });

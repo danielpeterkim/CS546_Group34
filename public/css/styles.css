@@ -1,6 +1,6 @@
 /* You will create a CSS stylesheet in /public/css/styles.css; this file should have at least 5 rulesets.  You will need to utilize all 5 rulesets on each of the pages (not every page has to use all 5 rulesets each but all 5 rulesets must be utilized by the various pages in your application).  So you can have some rulesets for one page, some for another page but there needs to be at least 5 total rulesets that are used between all the pages.  */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Exo 2', sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
@@ -61,7 +61,6 @@ form label {
     border: black 1px solid;
     padding: 10px;
     border-radius: 5px;
-    align-content: left;
 }
 
 .no-buildings {
@@ -70,15 +69,15 @@ form label {
     border-radius: 5px;
 }
 
-
-.buildingsOwned {
-    border: black 5px solid;
-    padding: 50px;
-    border-radius: 5px;
-}
 .city_buttons{
     text-align: right;
     font-size: 0.8em
+}
+
+.buildingsOwned {
+    border: black 5px solid;
+    padding: 20px;
+    border-radius: 5px;
 }
 
 .generator{
@@ -87,4 +86,18 @@ form label {
 }
 .no_buy{
     color:red
+}
+
+.buildingRow {
+    border: 3px solid black;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.buildingRow img {
+    width: 50px;
+    height: auto;
+    margin-right: 10px;
 }
