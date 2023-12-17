@@ -1,19 +1,42 @@
 <body>
 
 <h1>City</h1>
-<p>Placeholder city.</p>
+<p>Welcome, <span id="username">{{username}}</span></p>
+<p>Level: <span id="level">{{level}}</span>, XP: <span id="xp">{{xp}}</span></p>
+<div class="resources">
+    <p id="resourceText">
+        gold: <span id="gold">{{gold}}</span>,
+        wood: <span id="wood">{{wood}}</span>,
+        stone: <span id="stone">{{stone}}</span>,
+        amber: <span id="amber">{{amber}}</span>
+    </p>
+</div>
 <div class="buildingsOwned">
-    <p id="noBuildingsText">You have no buildings.</p>
+    {{#each buildings}}
+        <p>{{@key}}: {{this}}</p>
+    {{/each}}
 </div>
-
-
-<div class="buyButtons">
-</div>
-
-<p id="resourceText">gold: 0, wood: 0, stone: 0, amber: 0</p>
+<button id="buy-gold-generator">Buy Gold Generator</button>
+<button id="destroy-gold-generator">Destroy Gold Generator</button>
+<button id="buy-wood-generator">Buy Wood Generator</button>
+<button id="destroy-wood-generator">Destroy Wood Generator</button>
+<button id="buy-stone-generator">Buy Stone Generator</button>
+<button id="destroy-stone-generator">Destroy Stone Generator</button>
+<button id="buy-amber-generator">Buy Amber Generator</button>
+<button id="destroy-amber-generator">Destroy Amber Generator</button>
 <a href="/logout">Logout</a>
 
-  <script src="https://code.jquery.com/jquery-2.2.4.min.js"
-      integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-  <script src="../public/js/main.js"></script>
+<script>
+    var initialResources = {
+        gold: {{gold}},
+        wood: {{wood}},
+        stone: {{stone}},
+        amber: {{amber}}
+    };
+    //I looked through a lot of json documentation and this converts an object to its JSON representation,kinda fire but took way to long
+    var initialBuildings = {{{asJSON buildings}}};
+</script>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"
+    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script src="../public/js/main.js"></script>
 </body>
