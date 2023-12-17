@@ -82,7 +82,6 @@
         amber: parseInt($('#amber').text())
     };
 
-
     async function fetchAndUpdatePlayerData() {
         $.ajax({
             url: '/get-player',
@@ -118,8 +117,6 @@
             buildingsOwnedDiv.append(`<p>${buildingName}: ${count}</p>`);
         }
     }
-    
-    
 
     function handleBuildingAction(action, buildingName) {
         $.ajax({

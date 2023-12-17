@@ -1,0 +1,37 @@
+<head>
+    <title>Report Player</title>
+</head>
+
+<body>
+    <h1>Report Player</h1>
+
+    <p>
+        Hi {{name}},
+        Sorry to hear you're having issues. Please select a player and a reason for the report below.
+    </p>
+
+    <script type="text/javascript">
+        function showfield(reportReason){
+            if (reportReason === 'reasonOther') {
+                document.getElementById('otherReportReason').type = 'text';
+            } else {
+                document.getElementById('otherReportReason').type = 'hidden';
+            }
+        }
+    </script>
+
+    <form id="searchPlayers" method="GET">
+        <label for="show_search_term">Find Player</label>
+        <input type="text" id="show_search_term"/>
+        <label for="reportReason">Reason</label>
+        <select name="reportReason" onchange="showfield(this.options[this.selectedIndex].value)">
+            <option value="reasonBadName">Inappropriate Username</option>
+            <option value="reasonHarrassment">Harassment</option>
+            <option value="reasonOther">Other, please specify</option>
+        </select>
+        <input type="hidden" id="otherReportReason"/>
+        <div id="formError"></div>
+        <button type="submit">Submit</button>
+    </form>
+
+</body>
