@@ -25,15 +25,6 @@ async function seedBuildings() {
                 icon: 'https://i.ibb.co/Z6wvd4K/Coin-Generator.png'
             },
             {
-                buildingName: 'Amber Generator',
-                buildingDescription: 'Generates 1 amber for your city.',
-                buildingCost: { gold: 50, wood: 0, stone: 0 },
-                unlockLevel: 1,
-                lethality: { dmg_to_melee: 0, dmg_to_ranged: 0, dmg_to_magic: 0 },
-                resourceProduction: { gold_prod: 0, wood_prod: 0, stone_prod: 0, amber_prod: 1 },
-                icon: 'https://i.ibb.co/PQwD3zD/Amber-Generator.png' 
-            },
-            {
                 buildingName: 'Wood Generator',
                 buildingDescription: 'Generates 1 wood for your city.',
                 buildingCost: { gold: 60, wood: 0, stone: 0 },
@@ -52,6 +43,15 @@ async function seedBuildings() {
                 icon: 'https://i.ibb.co/gSz1VSN/Stone-Generator.png' ,
             },
             {
+                buildingName: 'Amber Generator',
+                buildingDescription: 'Generates 1 amber for your city.',
+                buildingCost: { gold: 50, wood: 0, stone: 0 },
+                unlockLevel: 1,
+                lethality: { dmg_to_melee: 0, dmg_to_ranged: 0, dmg_to_magic: 0 },
+                resourceProduction: { gold_prod: 0, wood_prod: 0, stone_prod: 0, amber_prod: 1 },
+                icon: 'https://i.ibb.co/PQwD3zD/Amber-Generator.png' 
+            },
+            {
                 buildingName: 'Gold Storage',
                 buildingDescription: 'Increase gold storage in your city by 200.',
                 buildingCost: { gold: 20, wood: 20, stone: 20 },
@@ -59,15 +59,6 @@ async function seedBuildings() {
                 lethality: { dmg_to_melee: 0, dmg_to_ranged: 0, dmg_to_magic: 0 },
                 resourceProduction: { gold_prod: 0, wood_prod: 0, stone_prod: 0, amber_prod: 0 },
                 icon: 'https://i.ibb.co/4szRP4P/Coin-Storage.png' 
-            },
-            {
-                buildingName: 'Amber Storage',
-                buildingDescription: 'Increase amber storage in your city by 200.',
-                buildingCost: { gold: 20, wood: 20, stone: 30 },
-                unlockLevel: 1,
-                lethality: { dmg_to_melee: 0, dmg_to_ranged: 0, dmg_to_magic: 0 },
-                resourceProduction: { gold_prod: 0, wood_prod: 0, stone_prod: 0, amber_prod: 0},
-                icon: 'https://i.ibb.co/xfVfN6T/Amber-Storage.png' 
             },
             {
                 buildingName: 'Wood Storage',
@@ -86,6 +77,15 @@ async function seedBuildings() {
                 lethality: { dmg_to_melee: 0, dmg_to_ranged: 0, dmg_to_magic: 0 },
                 resourceProduction: { gold_prod: 0, wood_prod: 0, stone_prod: 0, amber_prod: 0},
                 icon: 'https://i.ibb.co/Bj0dmH8/Stone-Storage.png' 
+            },
+            {
+                buildingName: 'Amber Storage',
+                buildingDescription: 'Increase amber storage in your city by 200.',
+                buildingCost: { gold: 20, wood: 20, stone: 30 },
+                unlockLevel: 1,
+                lethality: { dmg_to_melee: 0, dmg_to_ranged: 0, dmg_to_magic: 0 },
+                resourceProduction: { gold_prod: 0, wood_prod: 0, stone_prod: 0, amber_prod: 0},
+                icon: 'https://i.ibb.co/xfVfN6T/Amber-Storage.png' 
             },
             {
                 buildingName: 'Archer Tower',

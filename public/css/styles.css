@@ -61,6 +61,7 @@ form label {
     border: black 1px solid;
     padding: 10px;
     border-radius: 5px;
+    align-content: left;
 }
 
 .no-buildings {
