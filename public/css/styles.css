@@ -5,6 +5,9 @@ body {
     padding: 0;
     background-color: #f4f4f4;
 }
+.tasks{
+    text-align: center;
+}
 
 header {
     background: #333;
@@ -29,6 +32,9 @@ button {
     border: none;
     border-radius: 5px;
   }    
+  button:hover{
+    cursor: pointer;
+}
 .error{
     color: red;
     font-size: 0.8em;

@@ -65,7 +65,7 @@ router
         throw new Error('Password needs to be at least 8 characters long, at least one uppercase character, there has to be at least one number and there has to be at least one special character');
       }
       const player = await playerHelper.loginPlayer(usernameInput, passwordInput);
-      req.session.player = {username: player.username};
+      req.session.player = player;
       res.redirect('/city')
   } catch (e) {
       res.status(400).render('login', { error: e.message });
@@ -99,6 +99,16 @@ try {
   res.status(500).render('error');
 }
 
+});
+router.route('/tasks').get(async (req, res) => {
+  if(!req.session.player){
+    return res.redirect('/login');
+  }
+  res.render('tasks', {
+    tasks: req.session.player.tasks,
+    reward: req.session.player.level,
+    username: req.session.player.username
+  })
 });
 
 router.route('/error').get(async (req, res) => {
