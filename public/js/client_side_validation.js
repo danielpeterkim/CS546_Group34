@@ -49,6 +49,24 @@ function getFieldName(input){
     return input.id.charAt(0).toUpperCase() + input.id.slice(1);
 }
 
+function storage_capacity(playerBuildings, resourceType) {
+    let totalCapacity = 0;
+    const baseCapacity = 100; 
+    const capacityIncrease = 200;
+
+    playerBuildings.forEach(building => {
+        if (resourceType === 'gold' && building.buildingName === 'Gold Storage' ||
+            resourceType === 'amber' && building.buildingName === 'Amber Storage' ||
+            resourceType === 'wood' && building.buildingName === 'Wood Storage' ||
+            resourceType === 'stone' && building.buildingName === 'Stone Storage') {
+            totalCapacity += capacityIncrease;
+        }
+    });
+
+    return totalCapacity + baseCapacity;
+}
+
+
 document.getElementById('registration-form').addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -69,4 +87,8 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
         return;
     }
     this.submit();
+});
+
+document.storage_capacity.addEventListener('submit', function(e) {
+
 });

@@ -61,7 +61,12 @@ export const registerPlayer = async (
     amber: 0,
     tasks: [task1, task2, task3],
     buildings: {},
-    lastCollect: Date.now()
+    lastCollect: Date.now(),
+    capacity: {
+      gold: 100,
+      wood: 100,
+      stone: 100,
+      amber: 100},
   }
 
   const insertInfo = await players.insertOne(newPlayer);
@@ -224,9 +229,9 @@ export const buyBuilding = async(username, building) => {
   );
   const updatedPlayer={
     ...existingPlayer,
-    gold: playerGold,
-    wood: playerWood,
-    stone: playerStone,
+    gold: playerGold + buildingCostOfBuying.gold * costScale,
+    wood: playerWood + buildingCostOfBuying.wood * costScale,
+    stone: playerStone + buildingCostOfBuying.stone * costScale,
     amber: playerAmber,
     lastCollect: currentTime
   };
