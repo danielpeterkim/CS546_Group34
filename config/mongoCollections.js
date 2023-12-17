@@ -21,3 +21,4 @@ NOTE: YOU WILL NEED TO CHANGE THE CODE BELOW AND UNCOMMENT IT TO HAVE THE COLLEC
 export const players = getCollectionFn('players');
 export const buildings = getCollectionFn('buildings');
 export const army_units = getCollectionFn('army units');
+export const reports = getCollectionFn('reports');

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Report Player</title>
+
+    
+</head>
+
+<body>
+
+    <main>
+        <h1>Report Player</h1>
+        <p>
+        Hi {{name}},<br>Sorry to hear you're having issues. Please select a player and a reason for the report below.
+        </p>
+
+        <form id="searchPlayers">
+        <label for="show_search_term">Find Player</label>
+        <input type="text" id="show_search_term"/>
+        <label for="reportType">Reason</label>
+        <select name="reportType" id="reportType" onchange="showfield(this.options[this.selectedIndex].value)">
+            <option value="reasonBadName">Inappropriate Username</option>
+            <option value="reasonHarassment">Harassment</option>
+            <option value="reasonOther">Other, please specify</option>
+        </select>
+        <input type="hidden" id="otherReportReason"/>
+        <div id="formError"></div>
+        <button id='submitButton' type="submit">Submit</button>
+    </form>
+
+    <p hidden id="successMessage">Report Filed Successfully.</p>
+
+    </main>
+
+    <script type="text/javascript">
+        function showfield(reportReason){
+            if (reportReason === 'reasonOther') {
+                document.getElementById('otherReportReason').type = 'text';
+            } else {
+                document.getElementById('otherReportReason').type = 'hidden';
+            }
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="../public/js/report.js"></script>
+
+</body>
+
+</html>

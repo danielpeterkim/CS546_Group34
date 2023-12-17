@@ -51,7 +51,7 @@ export const registerPlayer = async (
     reward: undefined
   };
   let newPlayer = {
-    username: username.trim(),
+    username: insensitiveCaseUsername.trim(),
     password: hashedPassword,
     xp: 0,
     level: 1,
@@ -425,7 +425,18 @@ export function simulateBattle(playerUnits, opponentCityHealth, opponentBuilding
   let cityHealth = opponentCityHealth;
   let army = [...playerUnits];
 
-  const extraMortalityFromTowers = opponentBuildings['Archer Tower'] * 3 + opponentBuildings['Spell Tower'] * 10;
+  const mortalityModifiers = {
+      'Archer Tower': {
+          'armoured': 2, 
+          'magic armor': 1,    
+          'unarmoured': 3 
+      },
+      'Spell Tower': {
+          'armoured': 7,  
+          'magic armor': 5,       
+          'unarmoured': 10 
+      }
+  };
 
   while (cityHealth > 0 && army.length > 0) {
       for (let unit of army) {
@@ -435,7 +446,12 @@ export function simulateBattle(playerUnits, opponentCityHealth, opponentBuilding
           }
       }
 
-      army = army.filter(unit => Math.random() * 100 >= (unit.mortality + extraMortalityFromTowers));
+      army = army.filter(unit => {
+          const archerMortality = opponentBuildings['Archer Tower'] * (mortalityModifiers['Archer Tower'][unit.armor] || 3);
+          const spellMortality = opponentBuildings['Spell Tower'] * (mortalityModifiers['Spell Tower'][unit.armor] || 10);
+          const totalMortality = unit.mortality + archerMortality + spellMortality;
+          return Math.random() * 100 >= totalMortality;
+      });
   }
 
   return cityHealth <= 0 ? 'Victory' : 'Defeat';
