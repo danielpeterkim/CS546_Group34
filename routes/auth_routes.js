@@ -80,6 +80,28 @@ try {
   }
   const currentTime = new Date().toLocaleTimeString();
   const playerBuildings = req.session.player.buildings;
+
+  function storage_capacity(playerBuildings, resourceType) {
+    let totalCapacity = 0;
+    const baseCapacity = 100; 
+    const capacityIncrease = 200;
+
+    for (const [buildingName, count] of Object.entries(playerBuildings)) {
+        if ((resourceType === 'gold' && buildingName === 'Gold Storage') ||
+            (resourceType === 'amber' && buildingName === 'Amber Storage') ||
+            (resourceType === 'wood' && buildingName === 'Wood Storage') ||
+            (resourceType === 'stone' && buildingName === 'Stone Storage')) {
+            totalCapacity += capacityIncrease * count;
+        }
+    }
+
+    return totalCapacity + baseCapacity;
+  }
+
+  const goldStorageCapacity = storage_capacity(playerBuildings, 'gold');
+  const woodStorageCapacity = storage_capacity(playerBuildings, 'wood');
+  const stoneStorageCapacity = storage_capacity(playerBuildings, 'stone');
+  const amberStorageCapacity = storage_capacity(playerBuildings, 'amber');
   //added all the player database info for use in city. you can access these in city by calling on their variable names
   res.render('city',{
     username: req.session.player.username.trim(),
@@ -90,7 +112,11 @@ try {
     stone: req.session.player.stone,
     amber: req.session.player.amber,
     tasks: req.session.player.tasks,
-    buildings: req.session.player.buildings
+    buildings: req.session.player.buildings,
+    goldStorageCapacity,
+    woodStorageCapacity,
+    stoneStorageCapacity,
+    amberStorageCapacity
   });
 
 
@@ -100,6 +126,7 @@ try {
 }
 
 });
+
 router.route('/tasks').get(async (req, res) => {
   if(!req.session.player){
     return res.redirect('/login');
