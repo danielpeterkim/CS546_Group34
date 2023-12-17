@@ -65,7 +65,7 @@ router
         throw new Error('Password needs to be at least 8 characters long, at least one uppercase character, there has to be at least one number and there has to be at least one special character');
       }
       const player = await playerHelper.loginPlayer(usernameInput, passwordInput);
-      req.session.player = {username: player.username};
+      req.session.player = player;
       res.redirect('/city')
   } catch (e) {
       res.status(400).render('login', { error: e.message });
@@ -81,6 +81,8 @@ try {
   const currentTime = new Date().toLocaleTimeString();
   const playerBuildings = req.session.player.buildings;
   //added all the player database info for use in city. you can access these in city by calling on their variable names
+  // console.log(req.session.player.username.trim());
+  // console.log(req.session.player.gold);
   res.render('city',{
     username: req.session.player.username.trim(),
     xp: req.session.player.xp,
@@ -132,6 +134,25 @@ router.post('/buy-building', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+router.post('/destroy-building', async (req, res) => {
+  try {
+    const username = req.session.player.username; 
+    const building = req.body.building;
+    const updatedPlayer = await playerHelper.destroyBuilding(username, building);
 
+    res.json(updatedPlayer);
+  } catch (error) {
+    console.error('Error in destroyBuilding:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+router.post('/get-player', async (req, res) => {
+  try {
+    const playerData = await playerHelper.getPlayer(req.session.player.username);
+    res.json(playerData);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 export default router;

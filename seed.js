@@ -1,10 +1,13 @@
 import { createBuilding } from './data/buildings.js';
+import { buildings as buildingsCollection } from "./config/mongoCollections.js";
 
 async function seedBuildings() {
     try {
+        const buildings = await buildingsCollection();
+        await buildings.deleteMany({});
         const buildingsToSeed = [
             {
-                buildingName: 'Coin Generator',
+                buildingName: 'Gold Generator',
                 buildingDescription: 'Generates 1 gold for your city.',
                 buildingCost: { gold: 40, wood: 0, stone: 0 },
                 unlockLevel: 1,
