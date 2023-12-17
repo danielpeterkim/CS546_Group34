@@ -1,13 +1,19 @@
 import { createBuilding } from './data/buildings.js';
-import { buildings as buildingsCollection } from "./config/mongoCollections.js";
 
 async function seedBuildings() {
     try {
-        const buildings = await buildingsCollection();
-        await buildings.deleteMany({});
         const buildingsToSeed = [
             {
-                buildingName: 'Gold Generator',
+                buildingName: 'Castle',
+                buildingDescription: 'The center of your city and protection from outside forces.',
+                buildingCost: { gold: 100, wood: 100, stone: 100 },
+                unlockLevel: 1,
+                lethality: { dmg_to_melee: 0, dmg_to_ranged: 0, dmg_to_magic: 0 },
+                resourceProduction: { gold_prod: 0, wood_prod: 0, stone_prod: 0, amber_prod: 0},
+                icon: 'https://i.ibb.co/TYfmdXs/Castle.png' 
+            },
+            {
+                buildingName: 'Coin Generator',
                 buildingDescription: 'Generates 1 gold for your city.',
                 buildingCost: { gold: 40, wood: 0, stone: 0 },
                 unlockLevel: 1,
@@ -95,15 +101,6 @@ async function seedBuildings() {
                 lethality: { dmg_to_melee: 10, dmg_to_ranged: 8, dmg_to_magic: 5 },
                 resourceProduction: { gold_prod: 0, wood_prod: 0, stone_prod: 0, amber_prod: 0},
                 icon: 'https://i.ibb.co/Lgwd2RQ/Spell-Tower.png' 
-            },
-            {
-                buildingName: 'Castle',
-                buildingDescription: 'The center of your city and protection from outside forces.',
-                buildingCost: { gold: 100, wood: 100, stone: 100 },
-                unlockLevel: 1,
-                lethality: { dmg_to_melee: 0, dmg_to_ranged: 0, dmg_to_magic: 0 },
-                resourceProduction: { gold_prod: 0, wood_prod: 0, stone_prod: 0, amber_prod: 0},
-                icon: 'https://i.ibb.co/TYfmdXs/Castle.png' 
             },
             {
                 buildingName: 'Barracks',
