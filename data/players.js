@@ -125,7 +125,7 @@ export const loginPlayer = async (username, password) => {
   return existingPlayer;
 };
 
-export const getResources = async(username) => {
+export const getPlayer = async (username) => {
   if(!username){
     throw new Error("Error with authentication, please logout and login");
   }
@@ -135,9 +135,68 @@ export const getResources = async(username) => {
   if (!existingPlayer) {
     throw new Error("You are not a valid user, please restart");
   }
-  const resources = {gold: existingPlayer.gold, wood: existingPlayer.wood, stone:existingPlayer.stone, amber:existingPlayer.amber};
+  delete existingPlayer.password;
 
-  return resources;
+  //variables to change, tick, building names
+  const tickNumber = 1000;
+  const goldGenerator = "Gold Generator";
+  const woodGenerator = "Wood Generator";
+  const stoneGenerator = "Stone Generator";
+  const amberGenerator = "Amber Generator";
+
+  //resource calcuation
+  const buildings = await buildingsCollection();
+  const buildingGoldInfo = await buildings.findOne({ buildingName: goldGenerator});
+  const buildingWoodInfo = await buildings.findOne({ buildingName: woodGenerator});
+  const buildingStoneInfo = await buildings.findOne({ buildingName: stoneGenerator});
+  const buildingAmberInfo = await buildings.findOne({ buildingName: amberGenerator});
+
+  const currentTime = Date.now()
+  const ticks = (currentTime - existingPlayer.lastCollect)
+  let goldGenCount = 0
+  let woodGenCount = 0
+  let stoneGenCount = 0
+  let amberGenCount = 0
+  if(existingPlayer.buildings[goldGenerator]){
+    goldGenCount = existingPlayer.buildings[goldGenerator]
+  }
+  if(existingPlayer.buildings[woodGenerator]){
+    woodGenCount = existingPlayer.buildings[woodGenerator]
+  }
+  if(existingPlayer.buildings[stoneGenerator]){
+    stoneGenCount = existingPlayer.buildings[stoneGenerator]
+  }
+  if(existingPlayer.buildings[amberGenerator]){
+    amberGenCount = existingPlayer.buildings[amberGenerator]
+  }
+
+  let playerGold = existingPlayer.gold + ticks / tickNumber * goldGenCount * buildingGoldInfo.resourceProduction.gold_prod;
+  let playerWood = existingPlayer.wood + ticks / tickNumber * woodGenCount * buildingWoodInfo.resourceProduction.wood_prod;
+  let playerStone = existingPlayer.stone + ticks / tickNumber * stoneGenCount * buildingStoneInfo.resourceProduction.stone_prod;
+  let playerAmber = existingPlayer.amber + ticks / tickNumber * amberGenCount * buildingAmberInfo.resourceProduction.amber_prod;
+  await players.updateOne(
+    { username: insensitiveCaseUsername },
+    {
+      $set: {
+        gold: playerGold,
+        wood: playerWood,
+        stone: playerStone,
+        amber: playerAmber,
+        buildings: existingPlayer.buildings,
+        lastCollect: currentTime
+      }
+    }
+  )
+  const updatedPlayer = {
+    ...existingPlayer,
+    gold: playerGold,
+    wood: playerWood,
+    stone: playerStone,
+    amber: playerAmber,
+    lastCollect: currentTime
+  };
+
+  return updatedPlayer;
 }
 
 
@@ -159,11 +218,11 @@ export const buyBuilding = async(username, building) => {
   }
   delete existingPlayer.password;
   //variables to change, tick, building names
-  const tickNumber = 1000000;
-  const goldGenerator = gold_generator;
-  const woodGenerator = wood_generator;
-  const stoneGenerator = stone_generator;
-  const amberGenerator = amber_generator;
+  const tickNumber = 1000;
+  const goldGenerator = "Gold Generator";
+  const woodGenerator = "Wood Generator";
+  const stoneGenerator = "Stone Generator";
+  const amberGenerator = "Amber Generator";
 
   //resource calcuation
   const buildings = await buildingsCollection();
@@ -173,11 +232,29 @@ export const buyBuilding = async(username, building) => {
   const buildingAmberInfo = await buildings.findOne({ buildingName: amberGenerator});
 
   const ticks = (currentTime - existingPlayer.lastCollect)
+  let goldGenCount = 0
+  let woodGenCount = 0
+  let stoneGenCount = 0
+  let amberGenCount = 0
+  if(existingPlayer.buildings[goldGenerator]){
+    goldGenCount = existingPlayer.buildings[goldGenerator]
+  }
+  if(existingPlayer.buildings[woodGenerator]){
+    woodGenCount = existingPlayer.buildings[woodGenerator]
+  }
+  if(existingPlayer.buildings[stoneGenerator]){
+    stoneGenCount = existingPlayer.buildings[stoneGenerator]
+  }
+  if(existingPlayer.buildings[amberGenerator]){
+    amberGenCount = existingPlayer.buildings[amberGenerator]
+  }
 
-  const playerGold = existingPlayer.gold + ticks / tickNumber * existingPlayer.buildings[goldGenerator] * buildingGoldInfo.resourceProduction.gold_prod;
-  const playerWood = existingPlayer.wood + ticks / tickNumber * existingPlayer.buildings[woodGenerator] * buildingWoodInfo.resourceProduction.wood_prod;
-  const playerStone = existingPlayer.stone + ticks / tickNumber * existingPlayer.buildings[stoneGenerator] * buildingStoneInfo.resourceProduction.stone_prod;
-  const playerAmber = existingPlayer.amber + ticks / tickNumber * existingPlayer.buildings[amberGenerator] * buildingAmberInfo.resourceProduction.amber_prod;
+  console.log(existingPlayer.gold + " " + ticks  + " " +  tickNumber  + " " +  goldGenCount  + " " + buildingGoldInfo.resourceProduction.gold_prod)
+  console.log(existingPlayer.wood + " " + ticks  + " " +  tickNumber  + " " +  woodGenCount  + " " + buildingGoldInfo.resourceProduction.wood_prod)
+  let playerGold = existingPlayer.gold + ticks / tickNumber * goldGenCount * buildingGoldInfo.resourceProduction.gold_prod;
+  let playerWood = existingPlayer.wood + ticks / tickNumber * woodGenCount * buildingWoodInfo.resourceProduction.wood_prod;
+  let playerStone = existingPlayer.stone + ticks / tickNumber * stoneGenCount * buildingStoneInfo.resourceProduction.stone_prod;
+  let playerAmber = existingPlayer.amber + ticks / tickNumber * amberGenCount * buildingAmberInfo.resourceProduction.amber_prod;
 
 
   //checking if buying is valid
@@ -188,7 +265,7 @@ export const buyBuilding = async(username, building) => {
   const buildingCostOfBuying = buildingBuyingInfo.buildingCost;
   // cost of buying should scale with building amount, this will need to be updated for balance
   //if there exist more than 0 buildings, increase cost of buildings
-  const costScale = .3;
+  let costScale = .3;
   if(existingPlayer.buildings[building]){
     costScale = costScale * existingPlayer.buildings[building];
   }
@@ -196,8 +273,21 @@ export const buyBuilding = async(username, building) => {
     //else, remains basic cost
     costScale = 0;
   }
-
+  
   if(playerGold - (buildingCostOfBuying.gold + buildingCostOfBuying.gold * costScale) < 0 || playerWood - buildingCostOfBuying.wood < 0 || playerStone - buildingCostOfBuying.stone < 0){
+    await players.updateOne(
+      { username: insensitiveCaseUsername },
+      {
+        $set: {
+          gold: playerGold,
+          wood: playerWood,
+          stone: playerStone,
+          amber: playerAmber,
+          buildings: existingPlayer.buildings,
+          lastCollect: currentTime
+        }
+      }
+    );
     throw new Error("Not enough resources.");
   }
   //
@@ -206,9 +296,12 @@ export const buyBuilding = async(username, building) => {
   }else{
     existingPlayer.buildings[building] = 1;
   }
-  playerGold -= buildingCostOfBuying.gold;
-  playerWood -= buildingCostOfBuying.wood;
-  playerStone -= buildingCostOfBuying.stone;
+  playerGold -= (buildingCostOfBuying.gold + buildingCostOfBuying.gold * costScale);
+  playerWood -= (buildingCostOfBuying.wood + buildingCostOfBuying.wood * costScale);
+  playerStone -= (buildingCostOfBuying.stone + buildingCostOfBuying.stone * costScale);
+
+  
+
   await players.updateOne(
     { username: insensitiveCaseUsername },
     {
