@@ -1,6 +1,7 @@
 //import express, express router as shown in lecture code
 import express from 'express';
 import * as playerHelper from "../data/players.js";
+import {createReport} from '../data/reports.js';
 import xss from 'xss';
 const router = express.Router();
 
@@ -196,6 +197,15 @@ router.post('/get-player', async (req, res) => {
     return res.json(playerData);
   } catch (error) {
     return res.status(500).json({ error: error.message });
+  }
+});
+router.post('/report-player', async (req, res) => {
+  try {
+    const reportData = await createReport(req.session.player.username, req.body.reportedPlayer, req.body.reportData);
+    return res.json(reportData);
+  } catch (error) {
+    console.log('test');
+    return res.status(500).send({error: error});
   }
 });
 
