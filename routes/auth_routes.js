@@ -2,7 +2,6 @@
 import express from 'express';
 import * as playerHelper from "../data/players.js";
 import xss from 'xss';
-
 const router = express.Router();
 
 router.route('/').get(async (req, res) => {
@@ -74,10 +73,13 @@ router
   });
 
 router.route('/city').get(async (req, res) => {
+try {
+
   if(!req.session.player){
     return res.redirect('/login');
   }
   const currentTime = new Date().toLocaleTimeString();
+  const playerBuildings = req.session.player.buildings;
   //added all the player database info for use in city. you can access these in city by calling on their variable names
   res.render('city',{
     username: req.session.player.username.trim(),
@@ -89,9 +91,15 @@ router.route('/city').get(async (req, res) => {
     amber: req.session.player.amber,
     tasks: req.session.player.tasks,
     buildings: req.session.player.buildings
-  }
-)
+  });
+
+} catch (error) {
+  console.error('Error fetching player buildings:', error);
+  res.status(500).render('error');
+}
+
 });
+
 router.route('/error').get(async (req, res) => {
   res.status(500).render('error');
 });
