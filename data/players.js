@@ -73,6 +73,24 @@ export const loginPlayer = async (username, password) => {
   return existingPlayer;
 };
 
+export const getResources = async(username) => {
+  if(!username){
+    throw new Error("Error with authentication, please logout and login");
+  }
+  const players = await playersCollection();
+  const insensitiveCaseUsername = username.toLowerCase();
+  const existingPlayer = await players.findOne({ username: insensitiveCaseUsername});
+  if (!existingPlayer) {
+    throw new Error("You are not a valid user, please restart");
+  }
+  const resources = {gold: existingPlayer.gold, wood: existingPlayer.wood, stone:existingPlayer.stone, amber:existingPlayer.amber};
+
+  return resources;
+}
+
+
+
+
 export const buyBuilding = async(username, building) => {
   if(!username){
     throw new Error("Error with authentication, please logout and login");
