@@ -68,3 +68,8 @@ form label {
     padding: 10px;
     border-radius: 5px;
 }
+
+.help{
+    text-align: right;
+    font-size: 0.8em
+}
