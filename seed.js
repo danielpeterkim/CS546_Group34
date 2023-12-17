@@ -10,7 +10,7 @@ async function seedBuildings() {
                 unlockLevel: 1,
                 lethality: { dmg_to_melee: 0, dmg_to_ranged: 0, dmg_to_magic: 0 },
                 resourceProduction: { gold_prod: 1, wood_prod: 0, stone_prod: 0, amber_prod: 0 },
-                icon: 'your_icon_url_here'
+                icon: 'https://i.ibb.co/Z6wvd4K/Coin-Generator.png'
             },
             {
                 buildingName: 'Amber Generator',
@@ -19,7 +19,7 @@ async function seedBuildings() {
                 unlockLevel: 1,
                 lethality: { dmg_to_melee: 0, dmg_to_ranged: 0, dmg_to_magic: 0 },
                 resourceProduction: { gold_prod: 0, wood_prod: 0, stone_prod: 0, amber_prod: 1 },
-                icon: 'your_icon_url_here' 
+                icon: 'https://i.ibb.co/PQwD3zD/Amber-Generator.png' 
             },
             {
                 buildingName: 'Wood Generator',
@@ -28,7 +28,7 @@ async function seedBuildings() {
                 unlockLevel: 1,
                 lethality: { dmg_to_melee: 0, dmg_to_ranged: 0, dmg_to_magic: 0 },
                 resourceProduction: { gold_prod: 0, wood_prod: 1, stone_prod: 0, amber_prod: 0 },
-                icon: 'your_icon_url_here' 
+                icon: 'https://i.ibb.co/QvN2yyy/Wood-Generator.png' 
             },
             {
                 buildingName: 'Stone Generator',
@@ -37,7 +37,7 @@ async function seedBuildings() {
                 unlockLevel: 1,
                 lethality: { dmg_to_melee: 0, dmg_to_ranged: 0, dmg_to_magic: 0 },
                 resourceProduction: { gold_prod: 0, wood_prod: 0, stone_prod: 1, amber_prod: 0 },
-                icon: 'your_icon_url_here' ,
+                icon: 'https://i.ibb.co/gSz1VSN/Stone-Generator.png' ,
             },
             {
                 buildingName: 'Gold Storage',
@@ -46,7 +46,7 @@ async function seedBuildings() {
                 unlockLevel: 1,
                 lethality: { dmg_to_melee: 0, dmg_to_ranged: 0, dmg_to_magic: 0 },
                 resourceProduction: { gold_prod: 0, wood_prod: 0, stone_prod: 0, amber_prod: 0 },
-                icon: 'your_icon_url_here' 
+                icon: 'https://i.ibb.co/4szRP4P/Coin-Storage.png' 
             },
             {
                 buildingName: 'Amber Storage',
@@ -55,7 +55,7 @@ async function seedBuildings() {
                 unlockLevel: 1,
                 lethality: { dmg_to_melee: 0, dmg_to_ranged: 0, dmg_to_magic: 0 },
                 resourceProduction: { gold_prod: 0, wood_prod: 0, stone_prod: 0, amber_prod: 0},
-                icon: 'your_icon_url_here' 
+                icon: 'https://i.ibb.co/xfVfN6T/Amber-Storage.png' 
             },
             {
                 buildingName: 'Wood Storage',
@@ -64,7 +64,7 @@ async function seedBuildings() {
                 unlockLevel: 1,
                 lethality: { dmg_to_melee: 0, dmg_to_ranged: 0, dmg_to_magic: 0 },
                 resourceProduction: { gold_prod: 0, wood_prod: 0, stone_prod: 0, amber_prod: 0 },
-                icon: 'your_icon_url_here' 
+                icon: 'https://i.ibb.co/5k9ZFTv/Wood-Storage.png' 
             },
             {
                 buildingName: 'Stone Storage',
@@ -73,7 +73,7 @@ async function seedBuildings() {
                 unlockLevel: 1,
                 lethality: { dmg_to_melee: 0, dmg_to_ranged: 0, dmg_to_magic: 0 },
                 resourceProduction: { gold_prod: 0, wood_prod: 0, stone_prod: 0, amber_prod: 0},
-                icon: 'your_icon_url_here' 
+                icon: 'https://i.ibb.co/Bj0dmH8/Stone-Storage.png' 
             },
             {
                 buildingName: 'Archer Tower',
@@ -82,7 +82,7 @@ async function seedBuildings() {
                 unlockLevel: 1,
                 lethality: { dmg_to_melee: 2, dmg_to_ranged: 3, dmg_to_magic: 1 },
                 resourceProduction: { gold_prod: 0, wood_prod: 0, stone_prod: 0, amber_prod: 0},
-                icon: 'your_icon_url_here' 
+                icon: 'https://i.ibb.co/MfYNbC5/Archer-Tower.png' 
             },
             {
                 buildingName: 'Spell Tower',
@@ -91,7 +91,7 @@ async function seedBuildings() {
                 unlockLevel: 1,
                 lethality: { dmg_to_melee: 10, dmg_to_ranged: 8, dmg_to_magic: 5 },
                 resourceProduction: { gold_prod: 0, wood_prod: 0, stone_prod: 0, amber_prod: 0},
-                icon: 'your_icon_url_here' 
+                icon: 'https://i.ibb.co/Lgwd2RQ/Spell-Tower.png' 
             },
             {
                 buildingName: 'Castle',
@@ -100,7 +100,7 @@ async function seedBuildings() {
                 unlockLevel: 1,
                 lethality: { dmg_to_melee: 0, dmg_to_ranged: 0, dmg_to_magic: 0 },
                 resourceProduction: { gold_prod: 0, wood_prod: 0, stone_prod: 0, amber_prod: 0},
-                icon: 'your_icon_url_here' 
+                icon: 'https://i.ibb.co/TYfmdXs/Castle.png' 
             },
             {
                 buildingName: 'Barracks',
@@ -109,7 +109,25 @@ async function seedBuildings() {
                 unlockLevel: 1,
                 lethality: { dmg_to_melee: 0, dmg_to_ranged: 0, dmg_to_magic: 0 },
                 resourceProduction: { gold_prod: 0, wood_prod: 0, stone_prod: 0, amber_prod: 0},
-                icon: 'your_icon_url_here' 
+                icon: 'https://i.ibb.co/VvqKvd4/Barracks.png' 
+            },
+            {
+                buildingName: 'Magic Academy',
+                buildingDescription: 'Train your troops in the arcane and mystery.',
+                buildingCost: { gold: 140, wood: 190, stone: 130 },
+                unlockLevel: 1,
+                lethality: { dmg_to_melee: 0, dmg_to_ranged: 0, dmg_to_magic: 0 },
+                resourceProduction: { gold_prod: 0, wood_prod: 0, stone_prod: 0, amber_prod: 0},
+                icon: 'https://i.ibb.co/k2m4Ym3/Magic-Academy.png' 
+            },
+            {
+                buildingName: 'Army Camp',
+                buildingDescription: 'Increase the amount of troops you can deploy in combat.',
+                buildingCost: { gold: 40, wood: 40, stone: 20 },
+                unlockLevel: 1,
+                lethality: { dmg_to_melee: 0, dmg_to_ranged: 0, dmg_to_magic: 0 },
+                resourceProduction: { gold_prod: 0, wood_prod: 0, stone_prod: 0, amber_prod: 0},
+                icon: 'https://i.ibb.co/sqWfvVG/Army-Camp.png' 
             }
             
         ];
