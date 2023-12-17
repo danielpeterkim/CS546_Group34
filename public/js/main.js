@@ -122,8 +122,6 @@
             buildingsOwnedDiv.append(`<div class="buildingRow">${buildingName}: ${count}</div>`);
         }
     }
-    
-    
 
     function handleBuildingAction(action, buildingName){
         $.ajax({
