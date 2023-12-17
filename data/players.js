@@ -396,7 +396,7 @@ export async function validateUnitPurchase(username, selectedUnits, allUnits) {
   if(totalCost.size > player.buildings['Army Camp'] * 10){
     throw new Error("Not enough space in army camps for selected units.");
   }
-  return true;
+  return totalCost;
 }
 
 
@@ -466,4 +466,48 @@ export const createPlayerForSeed = async ({
       throw new Error('Could not create player for seed');
   }
   return { createdPlayer: true };
+};
+
+
+export const deductResources = async (username, totalCost) => {
+  if (!username || !totalCost){
+      throw new Error("Missing username or cost information");
+  }
+
+  const players = await playersCollection();
+  const insensitiveCaseUsername = username.toLowerCase();
+  const existingPlayer = await players.findOne({ username: insensitiveCaseUsername });
+
+  if (!existingPlayer) {
+      throw new Error("Player does not exist");
+  }
+
+  if (existingPlayer.gold < totalCost.gold || existingPlayer.wood < totalCost.wood || existingPlayer.stone < totalCost.stone || existingPlayer.amber < totalCost.amber) {
+      throw new Error("Not enough resources to deduct");
+  }
+
+  const updatedResources ={
+      gold: existingPlayer.gold - totalCost.gold,
+      wood: existingPlayer.wood - totalCost.wood,
+      stone: existingPlayer.stone - totalCost.stone,
+      amber: existingPlayer.amber - totalCost.amber
+  };
+
+  const updateInfo = await players.updateOne(
+      {username: insensitiveCaseUsername},
+      {
+          $set: {
+              gold: updatedResources.gold,
+              wood: updatedResources.wood,
+              stone: updatedResources.stone,
+              amber: updatedResources.amber
+          }
+      }
+  );
+
+  if (!updateInfo.matchedCount && !updateInfo.modifiedCount){
+      throw new Error("Failed to deduct resources");
+  }
+
+  return true; // Indicating successful resource deduction
 };

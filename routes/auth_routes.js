@@ -149,15 +149,14 @@ router.route('/pvp').get(async (req, res) => {
 router.post('/pvp/targeted-battle', async (req, res) => {
   try {
     let opponentUsername = req.body.targetPlayer;
-    if(!opponentUsername){
-      return res.status(404).render('error', { message: 'No match for player was found'});
+    if (!opponentUsername){
+      return res.render('pvp', { errorMessage: 'No match for player was found'});
     }
     const players = await playersCollection();
-    const existingPlayer = await players.findOne({username: opponentUsername.toLowerCase()});
+    const existingPlayer = await players.findOne({ username: opponentUsername.toLowerCase()});
     if (!existingPlayer){
-      throw new Error("User does not exist");
+      return res.render('pvp', { errorMessage: 'User does not exist'});
     }
-
     const currentPlayer = req.session.player.username;
     const userPlayer = await players.findOne({username: currentPlayer.toLowerCase()});
 
@@ -170,7 +169,7 @@ router.post('/pvp/targeted-battle', async (req, res) => {
     });
   } catch (error) {
     console.error('Error in targeted-battle:', error);
-    res.status(500).render('error', {message: 'Server error'});
+    res.render('error', {message: 'An error occurred'});
   }
 });
 
@@ -212,7 +211,8 @@ router.post('/pvp/execute-battle', async (req, res) => {
     const opponent = JSON.parse(req.body.opponent);
     const allUnits = await unitHelper.getAllUnits();
 
-    await playerHelper.validateUnitPurchase(username, selectedUnits, allUnits);
+    const totalcost = await playerHelper.validateUnitPurchase(username, selectedUnits, allUnits);
+    await playerHelper.deductResources(username, totalcost);
 
     let unitsArray = Object.keys(selectedUnits).map(unitName => ({
         ...allUnits.find(unit => unit.unitName === unitName),
