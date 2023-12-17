@@ -66,7 +66,7 @@ router
         throw new Error('Password needs to be at least 8 characters long, at least one uppercase character, there has to be at least one number and there has to be at least one special character');
       }
       const player = await playerHelper.loginPlayer(usernameInput, passwordInput);
-      req.session.player = {username: player.username};
+      req.session.player = player;
       res.redirect('/city')
   } catch (e) {
       res.status(400).render('login', { error: e.message });
@@ -97,28 +97,12 @@ router.route('/tasks').get(async (req, res) => {
     return res.redirect('/login');
   }
   res.render('tasks', {
-    tasks: req.session.player.tasks
+    tasks: req.session.player.tasks,
+    reward: req.session.player.level,
+    username: req.session.player.username
   })
 });
-router.route('/auth_routes/tasks/complete/:id').post((req, res) => {
-  const tasks = req.session.player.tasks;
-  for (let i = 0; i < tasks.length; i++){
-    let current = tasks[i];
-    if (current.name == req.params.id){
-      current.accepted = true;
-      const r = current.reward;
-      req.session.player.tasks[i] = current;
-      req.session.player.amber += r;
-      req.session.player.gold +=r;
-      req.session.player.xp +=r;
-      req.session.player.wood +=r;
-      req.session.player.stone +=r;
-      break;
-    }
-  }
-  const updatedData = finishToDo(parseInt(req.params.id));
-  res.render('tasks', {layout: null, ...updatedData});
-});
+
 router.route('/error').get(async (req, res) => {
   res.status(500).render('error');
 });

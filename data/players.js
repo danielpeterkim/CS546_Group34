@@ -31,7 +31,6 @@ export const registerPlayer = async (
     name: "Task 1",
     description: "Login",
     complete: false,
-    accepted: false,
     complete_date: undefined,
     reward: undefined
   };
@@ -39,7 +38,6 @@ export const registerPlayer = async (
     name: "Task 2",
     description: "Buy a Building",
     complete: false,
-    accepted: false,
     complete_date: undefined,
     reward: undefined
   };
@@ -47,7 +45,6 @@ export const registerPlayer = async (
     name: "Task 3",
     description: "Attack Another Player",
     complete: false,
-    accepted: false,
     complete_date: undefined,
     reward: undefined
   };
@@ -93,8 +90,11 @@ export const loginPlayer = async (username, password) => {
   const d = date.getDate();
   const m = date.getMonth();
   const y = date.getFullYear();
-  let tasks = existingPlayer.tasks
-  const level = existingPlayer.level
+  let tasks = existingPlayer.tasks;
+  let r = existingPlayer.level * 10;
+  if (r <= 0){
+    r = 10;
+  }
   tasks.forEach(task => {
     if (task.complete){
       if(task.complete_date !== undefined){
@@ -105,13 +105,16 @@ export const loginPlayer = async (username, password) => {
         }
       }
     }
-    const r = level * 10;
     task.reward = r;
   });
   let t1 = tasks[0];
   if(!t1.complete){
     t1.complete = true;
     t1.complete_date = date;
+    existingPlayer.gold += r;
+    existingPlayer.wood += r;
+    existingPlayer.stone += r;
+    existingPlayer.amber += r;
   };
   existingPlayer.tasks = tasks;
   await players.findOneAndUpdate({username: insensitiveCaseUsername}, {$set: existingPlayer});
