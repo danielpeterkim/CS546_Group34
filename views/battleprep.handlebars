@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Battle Preparation</title>
+    <script>
+        function validateResources() {
+    var userResources = {
+        gold: {{userResources.gold}},
+        wood: {{userResources.wood}},
+        stone: {{userResources.stone}},
+        amber: {{userResources.amber}}
+    };
+
+    var totalCost = { gold: 0, wood: 0, stone: 0, amber: 0 };
+    //like server side validation
+    {{#each units}}
+    var unitAmount = parseInt(document.getElementById("{{this.unitName}}-amount").value);
+    totalCost.gold += unitAmount * {{this.unitCost.gold}};
+    totalCost.wood += unitAmount * {{this.unitCost.wood}};
+    totalCost.stone += unitAmount * {{this.unitCost.stone}};
+    totalCost.amber += unitAmount * {{this.unitCost.amber}};
+    {{/each}}
+
+    if (totalCost.gold > userResources.gold || totalCost.wood > userResources.wood || 
+        totalCost.stone > userResources.stone || totalCost.amber > userResources.amber) {
+        alert("Not enough resources to purchase the selected army.");
+        return false;
+    }
+
+    return true;
+}
+    </script>
+</head>
+<body>
+    <h1>Battle Preparation</h1>
+    <p>Opponent: {{opponent.username}}</p>
+    <p>Opponent Towers: Archer Towers: {{getProperty opponent.buildings 'Archer Tower'}}, Spell Towers: {{getProperty opponent.buildings 'Spell Tower'}}</p> 
+    <p>Your Resources: Gold: {{userResources.gold}}, Wood: {{userResources.wood}}, Stone: {{userResources.stone}}, Amber: {{userResources.amber}}</p>
+
+    <form id="battle-form", form action="/pvp/execute-battle" method="POST" onsubmit="return validateResources()">
+        {{#each units}}
+        <div class="unit">
+            <img src="{{this.icon}}" alt="{{this.unitName}}">
+            <h2>{{this.unitName}}</h2>
+            <p>Cost: Gold: {{this.unitCost.gold}}, Wood: {{this.unitCost.wood}}, Stone: {{this.unitCost.stone}}, Amber: {{this.unitCost.amber}}</p>
+            <label for="{{this.unitName}}-amount">Amount:</label>
+            <input type="number" name="units[{{this.unitName}}]" id="{{this.unitName}}-amount" min="0" value="0">
+        </div>
+        {{/each}}
+        <input type="hidden" name="opponent" value="{{json opponent}}">
+        <button type="submit">Proceed to Battle</button>
+    </form> 
+
+    <script>
+        // Handlebars helper to convert object to JSON string, this was on the guide on how to make json functions so can't hurt
+        Handlebars.registerHelper('json', function(context) {
+            return JSON.stringify(context);
+        });
+    </script>   
+</body>
+</html>

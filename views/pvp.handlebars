@@ -2,9 +2,16 @@
 
 <div class="pvp">
     <div class="pvpButtons">
-        <button id="attack">Attack Random Player</button>
-        <form id="target-attack">Attack Specific Player:</form>
+        <form action="/pvp/random-attack" method="POST">
+            <button type="submit" id="random-attack">Attack Random Player</button>
+        </form>
+
+        <form id="target-attack" action="/pvp/targeted-battle" method="POST">
+            <input type="text" name="targetPlayer" placeholder="Enter player name">
+            <button type="submit">Attack Specific Player</button>
+        </form>
     </div>
 </div>
+
 
      

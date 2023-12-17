@@ -45,18 +45,18 @@ export const createBuilding = async (
     if (cost_s < 0) throw "Error: Stone cost cannot be negative.";
 
     if (typeof lethality !== 'object') throw "Error: Lethality index is not an object.";
-    let melee = lethality.dmg_to_melee;
-    let ranged = lethality.dmg_to_ranged;
+    let unarmored = lethality.dmg_to_unarmored;
+    let armored = lethality.dmg_to_armored;
     let magic = lethality.dmg_to_magic;
-    if (melee === null || melee === undefined) throw "Error: Damage to melee troops is missing.";
-    if (ranged === null || ranged === undefined) throw "Error: Damage to ranged troops is missing.";
+    if (unarmored === null || unarmored === undefined) throw "Error: Damage to unarmored troops is missing.";
+    if (armored === null || armored === undefined) throw "Error: Damage to armored troops is missing.";
     if (magic === null || magic === undefined) throw "Error: Damage to magic troops is missing.";
-    if (typeof melee !== 'number') throw "Error: Damage to melee troops is not a number.";
-    if (!Number.isInteger(melee)) throw "Error: Damage to melee troops is not an integer.";
-    if (melee < 0) throw "Error: Damage to melee troops cannot be negative.";
-    if (typeof ranged !== 'number') throw "Error: Damage to ranged troops is not a number.";
-    if (!Number.isInteger(ranged)) throw "Error: Damage to ranged troops is not an integer.";
-    if (ranged < 0) throw "Error: Damage to ranged troops cannot be negative.";
+    if (typeof unarmored !== 'number') throw "Error: Damage to unarmored troops is not a number.";
+    if (!Number.isInteger(unarmored)) throw "Error: Damage to unarmored troops is not an integer.";
+    if (unarmored < 0) throw "Error: Damage to unarmored troops cannot be negative.";
+    if (typeof armored !== 'number') throw "Error: Damage to armored troops is not a number.";
+    if (!Number.isInteger(armored)) throw "Error: Damage to armored troops is not an integer.";
+    if (armored < 0) throw "Error: Damage to armored troops cannot be negative.";
     if (typeof magic !== 'number') throw "Error: Damage to magic troops is not a number.";
     if (!Number.isInteger(magic)) throw "Error: Damage to magic troops is not an integer.";
     if (magic < 0) throw "Error: Damage to magic troops cannot be negative.";

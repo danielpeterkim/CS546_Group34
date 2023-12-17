@@ -118,6 +118,7 @@ export const loginPlayer = async (username, password) => {
     existingPlayer.wood += r;
     existingPlayer.stone += r;
     existingPlayer.amber += r;
+    existingPlayer.xp += r;
   };
   existingPlayer.tasks = tasks;
   await players.findOneAndUpdate({username: insensitiveCaseUsername}, {$set: existingPlayer});
@@ -299,17 +300,36 @@ export const buyBuilding = async(username, building) => {
   playerGold -= (buildingCostOfBuying.gold + buildingCostOfBuying.gold * costScale);
   playerWood -= (buildingCostOfBuying.wood + buildingCostOfBuying.wood * costScale);
   playerStone -= (buildingCostOfBuying.stone + buildingCostOfBuying.stone * costScale);
+  
+  const currentTasks = existingPlayer.tasks;
+  let xp = existingPlayer.xp;
+  let t2 = currentTasks[1];
+  if (!t2.complete){
+    const currentDate = new Date();
+    t2.complete = true;
+    t2.complete_date = currentDate;
+    
+    const r = t2.reward;
+    xp += r;
+    playerGold += r;
+    playerStone += r;
+    playerStone += r;
+    playerAmber += r;
 
+    currentTasks[1] = t2;
+  };
   
 
   await players.updateOne(
     { username: insensitiveCaseUsername },
     {
       $set: {
+        xp: xp,
         gold: playerGold,
         wood: playerWood,
         stone: playerStone,
         amber: playerAmber,
+        tasks: currentTasks,
         buildings: existingPlayer.buildings,
         lastCollect: currentTime
       }
@@ -357,3 +377,157 @@ export const destroyBuilding = async(username, building) => {
   );
   return existingPlayer;
 }
+
+
+
+function calculateTotalCost(selectedUnits, allUnits) {
+  let totalCost = { gold: 0, wood: 0, stone: 0, amber: 0 , size : 0};
+
+  for (const unitName in selectedUnits) {
+      const unitAmount = selectedUnits[unitName];
+      const unitInfo = allUnits.find(unit => unit.unitName === unitName);
+
+      if (unitInfo) {
+          totalCost.gold += unitAmount * unitInfo.unitCost.gold;
+          totalCost.wood += unitAmount * unitInfo.unitCost.wood;
+          totalCost.stone += unitAmount * unitInfo.unitCost.stone;
+          totalCost.amber += unitAmount * unitInfo.unitCost.amber;
+          totalCost.size += unitAmount * unitInfo.size;
+      }
+  }
+
+  return totalCost;
+}
+
+
+
+
+// Function to validate selected units against player's resources
+export async function validateUnitPurchase(username, selectedUnits, allUnits) {
+  const player = await getPlayer(username);
+  const totalCost = calculateTotalCost(selectedUnits, allUnits);
+
+  if (totalCost.gold > player.gold ||
+      totalCost.wood > player.wood ||
+      totalCost.stone > player.stone ||
+      totalCost.amber > player.amber) {
+      throw new Error("Not enough resources to purchase selected units.");
+  }
+  if(totalCost.size > player.buildings['Army Camp'] * 10){
+    throw new Error("Not enough space in army camps for selected units.");
+  }
+  return totalCost;
+}
+
+
+
+export function simulateBattle(playerUnits, opponentCityHealth, opponentBuildings) {
+  let cityHealth = opponentCityHealth;
+  let army = [...playerUnits];
+
+  const extraMortalityFromTowers = opponentBuildings['Archer Tower'] * 3 + opponentBuildings['Spell Tower'] * 10;
+
+  while (cityHealth > 0 && army.length > 0) {
+      for (let unit of army) {
+          if (Math.random() * 100 < unit.accuracy) {
+              cityHealth -= unit.damage_per_hit;
+              if (cityHealth <= 0) break;
+          }
+      }
+
+      army = army.filter(unit => Math.random() * 100 >= (unit.mortality + extraMortalityFromTowers));
+  }
+
+  return cityHealth <= 0 ? 'Victory' : 'Defeat';
+}
+
+
+export const createPlayerForSeed = async ({
+  username,
+  password,
+  xp = 0,
+  level = 1,
+  gold = 100,
+  wood = 100,
+  stone = 100,
+  amber = 100,
+  tasks = [],
+  buildings = {}
+}) => {
+  if (!username || !password) {
+      throw new Error("Username and/or password was not supplied");
+  }
+
+  const insensitiveCaseUsername = username.toLowerCase();
+  const players = await playersCollection();
+  const existingPlayer = await players.findOne({ username: insensitiveCaseUsername });
+
+  if (existingPlayer) {
+      throw new Error('A player with that username already exists');
+  }
+  const hashedPassword = await bcrypt.hash(password, 16);
+
+  let newPlayer = {
+      username: username.trim(),
+      password: hashedPassword,
+      xp,
+      level,
+      gold,
+      wood,
+      stone,
+      amber,
+      tasks,
+      buildings,
+      lastCollect: new Date()
+  };
+
+  const insertInfo = await players.insertOne(newPlayer);
+  if (insertInfo.insertedCount === 0) {
+      throw new Error('Could not create player for seed');
+  }
+  return { createdPlayer: true };
+};
+
+
+export const deductResources = async (username, totalCost) => {
+  if (!username || !totalCost){
+      throw new Error("Missing username or cost information");
+  }
+
+  const players = await playersCollection();
+  const insensitiveCaseUsername = username.toLowerCase();
+  const existingPlayer = await players.findOne({ username: insensitiveCaseUsername });
+
+  if (!existingPlayer) {
+      throw new Error("Player does not exist");
+  }
+
+  if (existingPlayer.gold < totalCost.gold || existingPlayer.wood < totalCost.wood || existingPlayer.stone < totalCost.stone || existingPlayer.amber < totalCost.amber) {
+      throw new Error("Not enough resources to deduct");
+  }
+
+  const updatedResources ={
+      gold: existingPlayer.gold - totalCost.gold,
+      wood: existingPlayer.wood - totalCost.wood,
+      stone: existingPlayer.stone - totalCost.stone,
+      amber: existingPlayer.amber - totalCost.amber
+  };
+
+  const updateInfo = await players.updateOne(
+      {username: insensitiveCaseUsername},
+      {
+          $set: {
+              gold: updatedResources.gold,
+              wood: updatedResources.wood,
+              stone: updatedResources.stone,
+              amber: updatedResources.amber
+          }
+      }
+  );
+
+  if (!updateInfo.matchedCount && !updateInfo.modifiedCount){
+      throw new Error("Failed to deduct resources");
+  }
+
+  return true; // Indicating successful resource deduction
+};

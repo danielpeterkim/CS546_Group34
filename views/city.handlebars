@@ -1,5 +1,12 @@
 <body>
-
+    <div class = "city_buttons">
+        <a href="/help">Click here to read up on how to play the game</a>
+        <br>
+        <a href="/tasks">Click here to view your daily tasks</a>
+    </div>
+<div class = "no_buy">
+        <h2  id = "no_buy" hidden = true>Not enough resources</h2>
+    </div>
 <h1>City</h1>
 <p>Welcome, <span id="username">{{username}}</span></p>
 <p>Level: <span id="level">{{level}}</span>, XP: <span id="xp">{{xp}}</span></p>
@@ -12,11 +19,23 @@
     </p>
 </div>
 <div class="buildingsOwned">
-    {{#each buildings}}
-        <p>{{@key}}: {{this}}</p>
-    {{/each}}
+    {{#if (isEmptyObject buildings)}}
+        <p id="noBuildingsText">You have no buildings.</p>
+    {{else}}
+        {{#each orderedBuildingsList}}
+            {{#if (propertyExists ../buildings @key)}}
+                <div class="buildingRow">
+                    <img src="{{this.icon}}" alt="{{@key}}" />
+                    <span>{{@key}}</span>
+                    <span>{{this.buildingDescription}}</span>
+                    <span>Count: {{lookup ../buildings @key}}</span>
+                </div>
+            {{/if}}
+        {{/each}}
+    {{/if}}
 </div>
 
+<div id="buildings">
 <button id="buy-gold-generator">Buy Gold Generator</button>
 <button id="destroy-gold-generator">Destroy Gold Generator</button>
 <button id="buy-wood-generator">Buy Wood Generator</button>
@@ -25,7 +44,25 @@
 <button id="destroy-stone-generator">Destroy Stone Generator</button>
 <button id="buy-amber-generator">Buy Amber Generator</button>
 <button id="destroy-amber-generator">Destroy Amber Generator</button>
-
+<button id="buy-gold-storage">Buy Gold Storage</button>
+<button id="destroy-gold-storage">Destroy Gold Storage</button>
+<button id="buy-wood-storage">Buy Wood Storage</button>
+<button id="destroy-wood-storage">Destroy Wood Storage</button>
+<button id="buy-stone-storage">Buy Stone Storage</button>
+<button id="destroy-stone-storage">Destroy Stone Storage</button>
+<button id="buy-amber-storage">Buy Amber Storage</button>
+<button id="destroy-amber-storage">Destroy Amber Storage</button>
+<button id="buy-archer-tower">Buy Archer Tower</button>
+<button id="destroy-archer-tower">Destroy Archer Tower</button>
+<button id="buy-spell-tower">Buy Spell Tower</button>
+<button id="destroy-spell-tower">Destroy Spell Tower</button>
+<button id="buy-barracks">Buy Barracks</button>
+<button id="destroy-barracks">Destroy Barracks</button>
+<button id="buy-magic-academy">Buy Magic Academy</button>
+<button id="destroy-magic-academy">Destroy Magic Academy</button>
+<button id="buy-army-camp">Buy Army Camp</button>
+<button id="destroy-army-camp">Destroy Army Camo</button>
+</div>
 
 <div class="storageCapacity">
     <p>Storage Capacities:</p>
@@ -36,7 +73,7 @@
         <li id="amberStorage">Amber Storage: {{amberStorageCapacity}}</li>
     </ul>
 </div>
-
+<a href="/pvp" class="pvp-button">Go to PvP</a>
 <a href="/logout">Logout</a>
 
 <script>
