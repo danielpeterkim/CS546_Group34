@@ -101,10 +101,10 @@
     }
 
     function updateResources(playerData) {
-        resources.gold = playerData.gold;
-        resources.wood = playerData.wood;
-        resources.stone = playerData.stone;
-        resources.amber = playerData.amber;
+        resources.gold = Math.floor(playerData.gold);
+        resources.wood = Math.floor(playerData.wood);
+        resources.stone = Math.floor(playerData.stone);
+        resources.amber = Math.floor(playerData.amber);
         er.hidden = true;
         $('#gold').text(resources.gold);
         $('#wood').text(resources.wood);
@@ -117,7 +117,7 @@
         buildingsOwnedDiv.empty();
     
         for (const [buildingName, count] of Object.entries(buildings)) {
-            buildingsOwnedDiv.append(`<p>${buildingName}: ${count}</p>`);
+            buildingsOwnedDiv.append(`<div class="buildingRow">${buildingName}: ${count}</div>`);
         }
     }
     
@@ -142,6 +142,7 @@
             }
         });
     }
+    
 
     $(document).ready(function () {
         $('#buy-gold-generator').click(function () { handleBuildingAction('buy-building', 'Gold Generator'); });
@@ -152,7 +153,25 @@
         $('#destroy-stone-generator').click(function () { handleBuildingAction('destroy-building', 'Stone Generator'); });
         $('#buy-amber-generator').click(function () { handleBuildingAction('buy-building', 'Amber Generator'); });
         $('#destroy-amber-generator').click(function () { handleBuildingAction('destroy-building', 'Amber Generator'); });
-        setInterval(fetchAndUpdatePlayerData, 750); 
+        $('#buy-gold-storage').click(function () { handleBuildingAction('buy-building', 'Gold Storage'); });
+        $('#destroy-gold-storage').click(function () { handleBuildingAction('destroy-building', 'Gold Storage'); });
+        $('#buy-wood-storage').click(function () { handleBuildingAction('buy-building', 'Wood Storage'); });
+        $('#destroy-wood-storage').click(function () { handleBuildingAction('destroy-building', 'Wood Storage'); });
+        $('#buy-stone-storage').click(function () { handleBuildingAction('buy-building', 'Stone Storage'); });
+        $('#destroy-stone-storage').click(function () { handleBuildingAction('destroy-building', 'Stone Storage'); });
+        $('#buy-amber-storage').click(function () { handleBuildingAction('buy-building', 'Amber Storage'); });
+        $('#destroy-amber-storage').click(function () { handleBuildingAction('destroy-building', 'Amber Storage'); });
+        $('#buy-archer-tower').click(function () { handleBuildingAction('buy-building', 'Archer Tower'); });
+        $('#destroy-archer-tower').click(function () { handleBuildingAction('destroy-building', 'Archer Tower'); });
+        $('#buy-spell-tower').click(function () { handleBuildingAction('buy-building', 'Spell Tower'); });
+        $('#destroy-spell-tower').click(function () { handleBuildingAction('destroy-building', 'Spell Tower'); });
+        $('#buy-barracks').click(function () { handleBuildingAction('buy-building', 'Barracks'); });
+        $('#destroy-barracks').click(function () { handleBuildingAction('destroy-building', 'Barracks'); });
+        $('#buy-magic-academy').click(function () { handleBuildingAction('buy-building', 'Magic Academy'); });
+        $('#destroy-magic-academy').click(function () { handleBuildingAction('destroy-building', 'Magic Academy'); });
+        $('#buy-army-camp').click(function () { handleBuildingAction('buy-building', 'Army Camp'); });
+        $('#destroy-army-camp').click(function () { handleBuildingAction('destroy-building', 'Army Camp'); });
+        setInterval(fetchAndUpdatePlayerData, 50); 
     });
     
 
