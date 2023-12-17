@@ -29,17 +29,37 @@ export const registerPlayer = async (
     throw new Error('A player with that username exists already');
   }
   const hashedPassword = await bcrypt.hash(password, 16);
-
+  let task1 = {
+    name: "Task 1",
+    description: "Login",
+    complete: false,
+    complete_date: undefined,
+    reward: undefined
+  };
+  let task2 = {
+    name: "Task 2",
+    description: "Buy a Building",
+    complete: false,
+    complete_date: undefined,
+    reward: undefined
+  };
+  let task3 = {
+    name: "Task 3",
+    description: "Attack Another Player",
+    complete: false,
+    complete_date: undefined,
+    reward: undefined
+  };
   let newPlayer = {
     username: username.trim(),
     password: hashedPassword,
     xp: 0,
-    level: 0,
-    gold: 0,
+    level: 1,
+    gold: 100,
     wood: 0,
     stone: 0,
     amber: 0,
-    tasks: [],
+    tasks: [task1, task2, task3],
     buildings: {},
     lastCollect: Date.now(),
     capacity: {},
@@ -70,9 +90,59 @@ export const loginPlayer = async (username, password) => {
   if (!passwordsMatch) {
     throw new Error("Username or password is invalid");
   }
+  const date = new Date();
+  const d = date.getDate();
+  const m = date.getMonth();
+  const y = date.getFullYear();
+  let tasks = existingPlayer.tasks;
+  let r = existingPlayer.level * 10;
+  if (r <= 0){
+    r = 10;
+  }
+  tasks.forEach(task => {
+    if (task.complete){
+      if(task.complete_date !== undefined){
+        const c_date = task.complete_date;
+        if(y > c_date.getFullYear() || y == c_date.getFullYear() && m > c_date.getMonth() || y == c_date.getFullYear() && m == c_date.getMonth() && d > c_date.getDate()){
+          task.complete_date = undefined;
+          task.complete = false;
+        }
+      }
+    }
+    task.reward = r;
+  });
+  let t1 = tasks[0];
+  if(!t1.complete){
+    t1.complete = true;
+    t1.complete_date = date;
+    existingPlayer.gold += r;
+    existingPlayer.wood += r;
+    existingPlayer.stone += r;
+    existingPlayer.amber += r;
+  };
+  existingPlayer.tasks = tasks;
+  await players.findOneAndUpdate({username: insensitiveCaseUsername}, {$set: existingPlayer});
   delete existingPlayer.password;
   return existingPlayer;
 };
+
+export const getResources = async(username) => {
+  if(!username){
+    throw new Error("Error with authentication, please logout and login");
+  }
+  const players = await playersCollection();
+  const insensitiveCaseUsername = username.toLowerCase();
+  const existingPlayer = await players.findOne({ username: insensitiveCaseUsername});
+  if (!existingPlayer) {
+    throw new Error("You are not a valid user, please restart");
+  }
+  const resources = {gold: existingPlayer.gold, wood: existingPlayer.wood, stone:existingPlayer.stone, amber:existingPlayer.amber};
+
+  return resources;
+}
+
+
+
 
 export const buyBuilding = async(username, building) => {
   if(!username){

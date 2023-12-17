@@ -65,7 +65,7 @@ router
         throw new Error('Password needs to be at least 8 characters long, at least one uppercase character, there has to be at least one number and there has to be at least one special character');
       }
       const player = await playerHelper.loginPlayer(usernameInput, passwordInput);
-      req.session.player = {username: player.username};
+      req.session.player = player;
       res.redirect('/city')
   } catch (e) {
       res.status(400).render('login', { error: e.message });
@@ -93,11 +93,22 @@ try {
     buildings: req.session.player.buildings
   });
 
+
 } catch (error) {
   console.error('Error fetching player buildings:', error);
   res.status(500).render('error');
 }
 
+});
+router.route('/tasks').get(async (req, res) => {
+  if(!req.session.player){
+    return res.redirect('/login');
+  }
+  res.render('tasks', {
+    tasks: req.session.player.tasks,
+    reward: req.session.player.level,
+    username: req.session.player.username
+  })
 });
 
 router.route('/error').get(async (req, res) => {
@@ -118,5 +129,19 @@ router.route('/logout').get(async (req, res) => {
     res.render('logout');
 }
 });
+
+router.post('/buy-building', async (req, res) => {
+  try {
+    const username = req.session.player.username; 
+    const building = req.body.building;
+    const updatedPlayer = await playerHelper.buyBuilding(username, building);
+
+    res.json(updatedPlayer);
+  } catch (error) {
+    console.error('Error in buyBuilding:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 export default router;
