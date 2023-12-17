@@ -11,14 +11,18 @@ export const createReport = async (
         if(!reportData) throw 'Error: missing report reason';
         
         if (typeof filingPlayer !== 'string') throw 'Error: filing player must be a string';
-        if (filingPlayer.trim().length === 0) throw 'Error: filing player name cannot be empty';
         if (typeof reportedPlayer !== 'string') throw 'Error: reported player must be a string';
-        if (typeof reportedPlayer.trim().length === 0) throw 'Error: reported player name cannot be empty';
-        if (filingPlayer.trim() === reportedPlayer.trim()) throw 'Error: you cannot report yourself!';
+
+        filingPlayer = filingPlayer.toLowerCase().trim();
+        reportedPlayer = reportedPlayer.toLowerCase().trim();
+
+        if (filingPlayer.length === 0) throw 'Error: filing player name cannot be empty';
+        
+        if (reportedPlayer.length === 0) throw 'Error: reported player name cannot be empty';
+        if (filingPlayer === reportedPlayer) throw 'Error: you cannot report yourself!';
         if (typeof reportData !== 'object') throw 'Error: report data must be an object';
         if (!('reportType' in reportData) 
             || !(['reasonBadName', 'reasonHarassment', 'reasonOther'].includes(reportData.reportType.trim()))) {
-            console.log(reportData);
             throw 'Error: invalid report type';
         }
         const reportType = reportData.reportType.trim();
@@ -38,19 +42,16 @@ export const createReport = async (
         if (!reportedPlayerEntry) throw 'Error: could not find reported player';
 
         let report = {
-            filingPlayer: filingPlayer.trim(),
-            reportedPlayer: reportedPlayer.trim(),
+            filingPlayer: filingPlayer,
+            reportedPlayer: reportedPlayer,
             reportData: reportData,
             reportStatus: 'pending'
         }
 
-
         const reportCollection = await reports();
 
         
-        const reportExists = await reportCollection.findOne({filingPlayer: filingPlayer.trim(), reportedPlayer: reportedPlayer.trim(), reportStatus: 'pending'});
-        
-        console.log(reportExists);
+        const reportExists = await reportCollection.findOne({filingPlayer: filingPlayer, reportedPlayer: reportedPlayer, reportStatus: 'pending'});
 
         if (!!reportExists) throw 'Error: you already have a pending report against this player.'
 

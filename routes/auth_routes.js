@@ -204,7 +204,6 @@ router.post('/report-player', async (req, res) => {
     const reportData = await createReport(req.session.player.username, req.body.reportedPlayer, req.body.reportData);
     return res.json(reportData);
   } catch (error) {
-    console.log('test');
     return res.status(500).send({error: error});
   }
 });

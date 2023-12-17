@@ -30,11 +30,9 @@
                 contentType: 'application/json',
                 data: JSON.stringify({reportedPlayer: searchTerm, reportData: reportData}),
                 success: function(response) {
-                    console.log(response);
                     successMessage.show();
                 },
                 error: function(xhr, textStatus, errorThrown) {
-                    console.log(xhr);
                     var err = eval("(" + xhr.responseText + ")");
                     successMessage.hide();
                     searchError.text(err.error);
