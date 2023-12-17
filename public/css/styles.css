@@ -68,3 +68,10 @@ form label {
     padding: 10px;
     border-radius: 5px;
 }
+
+
+.buildingsOwned {
+    border: black 5px solid;
+    padding: 50px;
+    border-radius: 5px;
+}

@@ -2,6 +2,7 @@ import express from 'express';
 import session from 'express-session';
 import exphbs from 'express-handlebars';
 import configRoutes from './routes/index.js';
+import Handlebars from 'handlebars';
 
 const app = express();
 const staticDir = express.static('public');
@@ -46,7 +47,10 @@ const handlebarsInstance = exphbs.create({
       }
       return new Handlebars.SafeString(JSON.stringify(obj));
     },
-    eq: (v1, v2) => v1 === v2
+    eq: (v1, v2) => v1 === v2,
+    isEmptyObject: (obj) => {
+      return Object.keys(obj).length === 0 && obj.constructor === Object;
+    }
   }
 });
 
