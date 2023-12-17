@@ -58,7 +58,8 @@ export const registerPlayer = async (
     stone: 0,
     amber: 0,
     tasks: [task1, task2, task3],
-    buildings: {}
+    buildings: {},
+    lastCollect: Date.now()
   }
 
   const insertInfo = await players.insertOne(newPlayer);
