@@ -75,6 +75,8 @@
     //         }
     //     })
     // }
+    let er = document.getElementById("no_buy");
+
     const resources = {
         gold: parseInt($('#gold').text()),
         wood: parseInt($('#wood').text()),
@@ -103,7 +105,7 @@
         resources.wood = playerData.wood;
         resources.stone = playerData.stone;
         resources.amber = playerData.amber;
-        
+        er.hidden = true;
         $('#gold').text(resources.gold);
         $('#wood').text(resources.wood);
         $('#stone').text(resources.stone);
@@ -136,6 +138,7 @@
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error('Error with building action:', textStatus, errorThrown);
+                er.hidden = false;
             }
         });
     }

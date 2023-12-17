@@ -1,5 +1,5 @@
 // TODO: Export and implement the following functions in ES6 format
-import { army_units } from "./mongoCollections.js";
+import { army_units } from "../config/mongoCollections.js";
 import {ObjectId} from 'mongodb';
 import isURL from 'is-url';
 
@@ -67,7 +67,6 @@ export const createUnit = async (
     if (typeof unit_type !== 'string') throw 'Error: Unit type must be a string';
     if (unit_type.trim().length <= 0) throw `Error: Unit type cannot be empty.`;
     unit_type = unit_type.trim().toLowerCase();
-    console.log(unit_type);
     if (unit_type !== 'melee' && unit_type !== 'ranged' && unit_type !== 'magic') throw 'Error: Invalid unit type.';
 
     if (typeof armor !== 'string') throw 'Error: Armor must be a string';

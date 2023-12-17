@@ -76,3 +76,15 @@ form label {
     padding: 50px;
     border-radius: 5px;
 }
+.city_buttons{
+    text-align: right;
+    font-size: 0.8em
+}
+
+.generator{
+    text-align: left;
+    width: 25%;
+}
+.no_buy{
+    color:red
+}
