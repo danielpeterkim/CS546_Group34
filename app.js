@@ -28,11 +28,12 @@ app.use((req, res, next) => {
   if (!req.session.player && (route !== '/login' && route !== '/register')) {
       return res.redirect('/login');
   }
-  if (req.session.player && (route === '/pvp/battleprep' || route === '/pvp/battleresults') && !req.session.inCombat) {
-      return res.redirect('/city');
-  }
   //better way to make middleware according to w3schools
+<<<<<<< Updated upstream
   if (req.session.player && !['/city', '/logout', '/buy-building', '/destroy-building', '/get-player', '/pvp', '/pvp/targeted-battle', '/pvp/random-attack', '/pvp/execute-battle', '/tasks'].includes(route)) {
+=======
+  if (req.session.player && !['/city', '/logout', '/buy-building', '/destroy-building', '/get-player', '/pvp', '/report', '/report-player', '/pvp/targeted-battle', '/pvp/random-attack', '/pvp/execute-battle', '/tasks'].includes(route)) {
+>>>>>>> Stashed changes
       return res.redirect('/city');
   }
 
