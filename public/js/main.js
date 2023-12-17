@@ -106,7 +106,6 @@
         resources.wood = Math.floor(playerData.wood);
         resources.stone = Math.floor(playerData.stone);
         resources.amber = Math.floor(playerData.amber);
-        er.hidden = true;
         $('#gold').text(resources.gold);
         $('#wood').text(resources.wood);
         $('#stone').text(resources.stone);
@@ -124,6 +123,7 @@
     }
 
     function handleBuildingAction(action, buildingName){
+        er.hidden = true;
         $.ajax({
             url: '/' + action,
             method: 'POST',

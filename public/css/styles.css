@@ -101,3 +101,19 @@ form label {
     height: auto;
     margin-right: 10px;
 }
+
+.btn-build{
+    width: 30%;
+    
+}
+
+.column {
+    float: left;
+    width: 50%;
+  }
+
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
