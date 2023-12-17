@@ -1,17 +1,24 @@
-<h1>Daily Tasks</h1>
-<h2>Welcome {{username}}! You will earn {{ reward }} XP and {{ reward }} of every resource for each task you complete! </h2>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
-        crossorigin="anonymous">
-<body class = "tasks">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Daily Tasks</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+</head>
+<body class="tasks">
+    <h1>Daily Tasks</h1>
+    <h2>Welcome {{username}}! You will earn {{ reward }} XP and {{ reward }} of every resource for each task you complete!</h2>
+    
     {{#each tasks}} 
         <h3>{{ name }}</h3>
-        <p style = "font-size: 1.5rem">{{ description }}</p>
+        <p style="font-size: 1.5rem">{{ description }}</p>
         {{#if complete }}
-        <em id = "accept{{data_id}}">This task has been completed</em>
+        <em id="accept{{data_id}}">This task has been completed</em>
         {{/if}}
     {{/each}}
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
-        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    
+    <a href="/city">Return to City</a>
+    
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 </body>
-
-<a href="/city">Return to City</a>
+</html>
