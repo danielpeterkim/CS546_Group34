@@ -85,11 +85,11 @@
     };
 
 
-    async function fetchAndUpdatePlayerData() {
+    async function fetchAndUpdatePlayerData(){
         $.ajax({
             url: '/get-player',
             method: 'POST',
-            success: function (playerData) {
+            success: function (playerData){
                 console.log(playerData);
                 updateResources(playerData);
                 updateBuildings(playerData.buildings);
@@ -99,6 +99,7 @@
             }
         });
     }
+
 
     function updateResources(playerData) {
         resources.gold = Math.floor(playerData.gold);
@@ -112,10 +113,11 @@
         $('#amber').text(resources.amber);
     }
 
-    function updateBuildings(buildings) {
+    function updateBuildings(buildings){
         var buildingsOwnedDiv = $('.buildingsOwned');
         buildingsOwnedDiv.empty();
     
+
         for (const [buildingName, count] of Object.entries(buildings)) {
             buildingsOwnedDiv.append(`<div class="buildingRow">${buildingName}: ${count}</div>`);
         }
@@ -123,7 +125,7 @@
     
     
 
-    function handleBuildingAction(action, buildingName) {
+    function handleBuildingAction(action, buildingName){
         $.ajax({
             url: '/' + action,
             method: 'POST',
@@ -144,7 +146,7 @@
     }
     
 
-    $(document).ready(function () {
+    $(document).ready(function (){
         $('#buy-gold-generator').click(function () { handleBuildingAction('buy-building', 'Gold Generator'); });
         $('#destroy-gold-generator').click(function () { handleBuildingAction('destroy-building', 'Gold Generator'); });
         $('#buy-wood-generator').click(function () { handleBuildingAction('buy-building', 'Wood Generator'); });
@@ -173,6 +175,9 @@
         $('#destroy-army-camp').click(function () { handleBuildingAction('destroy-building', 'Army Camp'); });
         setInterval(fetchAndUpdatePlayerData, 50); 
     });
+    
+
+    
     
 
 })(window.jQuery);

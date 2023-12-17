@@ -2,6 +2,9 @@ import { createBuilding } from './data/buildings.js';
 import { buildings as buildingsCollection } from "./config/mongoCollections.js";
 import { createUnit } from './data/units.js';
 import { army_units as unitsCollection } from "./config/mongoCollections.js";
+import { createPlayerForSeed } from './data/players.js';
+import { players as playersCollection } from "./config/mongoCollections.js";
+
 
 async function seedBuildings() {
     try {
@@ -273,4 +276,81 @@ async function seedBuildings() {
     }
 }
 
+async function seedPlayers() {
+    try {
+        // Define the players you want to seed
+        let task1 = {
+            name: "Task 1",
+            description: "Login",
+            complete: false,
+            complete_date: undefined,
+            reward: undefined
+        };
+        let task2 = {
+            name: "Task 2",
+            description: "Buy a Building",
+            complete: false,
+            complete_date: undefined,
+            reward: undefined
+        };
+        let task3 = {
+            name: "Task 3",
+            description: "Attack Another Player",
+            complete: false,
+            complete_date: undefined,
+            reward: undefined
+        };
+        const playersToSeed = [
+            {
+                username: 'noob1',
+                password: 'Password123!',
+                xp: 100,
+                level: 2,
+                gold: 200,
+                wood: 150,
+                stone: 100,
+                amber: 50,
+                tasks: [task1, task2, task3],
+                buildings: { 'Castle' : 1, 'Gold Generator': 2, 'Gold Storage': 2, 'Wood Storage': 1, "Archer Tower": 2, 'Army Camp': 2}
+            },
+            {
+                username: 'player1',
+                password: 'Password123@',
+                xp: 100,
+                level: 5,
+                gold: 200,
+                wood: 150,
+                stone: 100,
+                amber: 50,
+                tasks: [task1, task2, task3],
+                buildings: {  'Castle' : 3, 'Gold Generator': 4, 'Gold Storage': 4, 'Wood Storage': 2, 'Stone Generator': 2 ,"Archer Tower": 5 , 'Army Camp': 5}
+            },
+            {
+                username: 'thebest',
+                password: 'theBest1!',
+                xp: 100,
+                level: 10,
+                gold: 200,
+                wood: 150,
+                stone: 100,
+                amber: 50,
+                tasks: [task1, task2, task3],
+                buildings: { 'Castle' : 6,'Gold Generator': 10, 'Gold Storage': 10,'Wood Generator': 10,'Wood Storage': 7,'Stone Generator': 10,'Stone Storage': 7,'Amber Generator': 10,'Amber Storage': 7, "Archer Tower": 7, 'Spell Tower': 2 , 'Army Camp': 20}
+            }
+        ];
+        const player = await playersCollection();
+        await player.deleteMany({});
+        for (const player of playersToSeed) {
+            await createPlayerForSeed(player);
+        }
+
+        console.log('Players seeded successfully');
+    } catch (error) {
+        console.error('Error seeding players:', error);
+    }
+}
+
+
 seedBuildings();
+
+seedPlayers();
