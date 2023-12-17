@@ -16,6 +16,7 @@
         <p>{{@key}}: {{this}}</p>
     {{/each}}
 </div>
+
 <button id="buy-gold-generator">Buy Gold Generator</button>
 <button id="destroy-gold-generator">Destroy Gold Generator</button>
 <button id="buy-wood-generator">Buy Wood Generator</button>
@@ -24,6 +25,19 @@
 <button id="destroy-stone-generator">Destroy Stone Generator</button>
 <button id="buy-amber-generator">Buy Amber Generator</button>
 <button id="destroy-amber-generator">Destroy Amber Generator</button>
+
+
+<p id="resourceText">gold: 0, wood: 0, stone: 0, amber: 0</p>
+<div class="storageCapacity">
+    <p>Storage Capacities:</p>
+    <ul>
+        <li id="goldStorage">Gold Storage: {{goldStorageCapacity}}</li>
+        <li id="woodStorage">Wood Storage: {{woodStorageCapacity}}</li>
+        <li id="stoneStorage">Stone Storage: {{stoneStorageCapacity}}</li>
+        <li id="amberStorage">Amber Storage: {{amberStorageCapacity}}</li>
+    </ul>
+</div>
+
 <a href="/logout">Logout</a>
 
 <script>

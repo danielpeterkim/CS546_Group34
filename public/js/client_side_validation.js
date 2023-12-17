@@ -70,3 +70,7 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
     }
     this.submit();
 });
+
+document.storage_capacity.addEventListener('submit', function(e) {
+
+});
