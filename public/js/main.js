@@ -171,7 +171,7 @@
         $('#destroy-magic-academy').click(function () { handleBuildingAction('destroy-building', 'Magic Academy'); });
         $('#buy-army-camp').click(function () { handleBuildingAction('buy-building', 'Army Camp'); });
         $('#destroy-army-camp').click(function () { handleBuildingAction('destroy-building', 'Army Camp'); });
-        setInterval(fetchAndUpdatePlayerData, 50); 
+        setInterval(fetchAndUpdatePlayerData, 100); 
     });
     
 

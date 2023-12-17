@@ -16,7 +16,7 @@ async function seedBuildings() {
                 buildingDescription: 'The center of your city and protection from outside forces.',
                 buildingCost: { gold: 100, wood: 100, stone: 100 },
                 unlockLevel: 1,
-                lethality: { dmg_to_melee: 0, dmg_to_ranged: 0, dmg_to_magic: 0 },
+                lethality:{ dmg_to_unarmored: 0, dmg_to_armored: 0, dmg_to_magic: 0 },
                 resourceProduction: { gold_prod: 0, wood_prod: 0, stone_prod: 0, amber_prod: 0},
                 icon: 'https://i.ibb.co/TYfmdXs/Castle.png' 
             },
@@ -52,7 +52,7 @@ async function seedBuildings() {
                 buildingDescription: 'Generates 1 amber for your city.',
                 buildingCost: { gold: 50, wood: 0, stone: 0 },
                 unlockLevel: 1,
-                lethality: { dmg_to_melee: 0, dmg_to_ranged: 0, dmg_to_magic: 0 },
+                lethality: { dmg_to_unarmored: 0, dmg_to_armored: 0, dmg_to_magic: 0 },
                 resourceProduction: { gold_prod: 0, wood_prod: 0, stone_prod: 0, amber_prod: 1 },
                 icon: 'https://i.ibb.co/PQwD3zD/Amber-Generator.png' 
             },
@@ -88,7 +88,7 @@ async function seedBuildings() {
                 buildingDescription: 'Increase amber storage in your city by 200.',
                 buildingCost: { gold: 20, wood: 20, stone: 30 },
                 unlockLevel: 1,
-                lethality: { dmg_to_melee: 0, dmg_to_ranged: 0, dmg_to_magic: 0 },
+                lethality: { dmg_to_unarmored: 0, dmg_to_armored: 0, dmg_to_magic: 0 },
                 resourceProduction: { gold_prod: 0, wood_prod: 0, stone_prod: 0, amber_prod: 0},
                 icon: 'https://i.ibb.co/xfVfN6T/Amber-Storage.png' 
             },
@@ -311,7 +311,7 @@ async function seedPlayers() {
                 stone: 100,
                 amber: 50,
                 tasks: [task1, task2, task3],
-                buildings: { 'Castle' : 1, 'Gold Generator': 2, 'Gold Storage': 2, 'Wood Storage': 1, "Archer Tower": 2, 'Army Camp': 2}
+                buildings: { 'Castle' : 1, 'Gold Generator': 2, 'Gold Storage': 2, 'Wood Generator': 2,'Wood Storage': 1, 'Stone Generator': 2,'Stone Storage': 1, "Archer Tower": 2, 'Army Camp': 2}
             },
             {
                 username: 'player1',
@@ -323,7 +323,19 @@ async function seedPlayers() {
                 stone: 100,
                 amber: 50,
                 tasks: [task1, task2, task3],
-                buildings: {  'Castle' : 3, 'Gold Generator': 4, 'Gold Storage': 4, 'Wood Storage': 2, 'Stone Generator': 2 ,"Archer Tower": 5 , 'Army Camp': 5}
+                buildings: {  'Castle' : 3, 'Gold Generator': 4, 'Gold Storage': 4, 'Wood Generator': 2,'Wood Storage': 2, 'Stone Generator': 2 , 'Amber Generator': 2, "Archer Tower": 5 , 'Army Camp': 5}
+            },
+            {
+                username: 'player4',
+                password: 'Password123@',
+                xp: 100,
+                level: 2,
+                gold: 100,
+                wood: 100,
+                stone: 100,
+                amber: 50,
+                tasks: [task1, task2, task3],
+                buildings: {  'Castle' : 3, 'Gold Generator': 4, 'Gold Storage': 4, 'Wood Generator': 2,'Wood Storage': 2, 'Stone Generator': 2 , 'Amber Generator': 2, "Archer Tower": 5 , 'Army Camp': 5}
             },
             {
                 username: 'thebest',
