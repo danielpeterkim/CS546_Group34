@@ -1,5 +1,7 @@
 import { createBuilding } from './data/buildings.js';
 import { buildings as buildingsCollection } from "./config/mongoCollections.js";
+import { createUnit } from './data/units.js';
+import { army_units as unitsCollection } from "./config/mongoCollections.js";
 
 async function seedBuildings() {
     try {
@@ -148,8 +150,126 @@ async function seedBuildings() {
         }
 
         console.log('Buildings seeded successfully');
+        const units = await unitsCollection();
+        await units.deleteMany({});
+        const unitsToSeed = [
+            {
+                unitName: "Swords Man",
+                unitCost: {gold: 10 , wood: 5, stone: 10, amber: 10}, 
+                accuracy: 80,
+                damage_per_hit: 2,
+                mortality: 30,
+                type: "melee",
+                armor: "armored",
+                size: 2,
+                icon: "https://i.ibb.co/4K9BgLL/tile056.png"        
+            },
+            {
+                unitName: "Archer",
+                unitCost: {gold: 10 , wood: 10, stone: 5, amber: 15}, 
+                accuracy: 30,
+                damage_per_hit: 1,
+                mortality: 15,
+                type: "ranged",
+                armor: "unarmored",
+                size: 1,
+                icon: "https://i.ibb.co/nmLsPLL/tile075.png"        
+            },
+            {
+                unitName: "Bezerker",
+                unitCost: {gold: 10 , wood: 15, stone: 15, amber: 20}, 
+                accuracy: 90,
+                damage_per_hit: 3,
+                mortality: 60,
+                type: "melee",
+                armor: "armored",
+                size: 3, 
+                icon: "https://i.ibb.co/t4RJFq8/tile064.png"        
+            },
+            {
+                unitName: "Ranger",
+                unitCost: {gold: 15 , wood: 20, stone: 10, amber: 15}, 
+                accuracy: 55,
+                damage_per_hit: 2,
+                mortality: 10,
+                type: "ranged",
+                armor: "unarmored",
+                size: 1, 
+                icon: "https://i.ibb.co/Q8DWtB5/tile076.png"        
+            },
+            {
+                unitName: "Juggernaut",
+                unitCost: {gold: 50 , wood: 30, stone: 40, amber: 50}, 
+                accuracy: 5,
+                damage_per_hit: 5,
+                mortality: 8,
+                type: "melee",
+                armor: "armored",
+                size: 4, 
+                icon: "https://i.ibb.co/M2B1j64/tile110.png"        
+            },
+            {
+                unitName: "Boomer",
+                unitCost: {gold: 90 , wood: 40, stone: 70, amber: 80}, 
+                accuracy: 80,
+                damage_per_hit: 4,
+                mortality: 10,
+                type: "ranged",
+                armor: "armored",
+                size: 4,
+                icon: "https://i.ibb.co/kmkYfFy/tile081.png"       
+            },
+            {
+                unitName: "Apprentice Mage",
+                unitCost: {gold: 60 , wood: 40, stone: 50, amber: 40}, 
+                accuracy: 100,
+                damage_per_hit: 2,
+                mortality: 20,
+                type: "magic",
+                armor: "magic armor",
+                size: 1,
+                icon: "https://i.ibb.co/zV3qNCT/tile114.png"        
+            },
+            {
+                unitName: "Shaman", 
+                unitCost: {gold: 90 , wood: 90, stone: 60, amber: 100}, 
+                accuracy: 100,
+                damage_per_hit: 3,
+                mortality: 10,
+                type: "magic",
+                armor: "magic armor",
+                size: 2,
+                icon: "https://i.ibb.co/tDX6X10/tile116.png"        
+            },
+            {
+                unitName: "True Sage",
+                unitCost: {gold: 300 , wood: 400, stone: 500, amber: 600}, 
+                accuracy: 100,
+                damage_per_hit: 10,
+                mortality: 1,
+                type: "magic",
+                armor: "magic armor",
+                size: 7,
+                icon: "https://i.ibb.co/bmTV9Yh/tile118.png"        
+            }
+        ]
+
+        for (const units of unitsToSeed) {
+            await createUnit(
+                units.unitName,
+                units.unitCost,
+                units.accuracy,
+                units.damage_per_hit,
+                units.mortality,
+                units.type,
+                units.armor,
+                units.size,
+                units.icon
+            );
+        }
+        console.log('Units seeded successfully');
     } catch (error) {
-        console.error('Error seeding buildings:', error);
+        console.error('Error seeding:', error);
     }
 }
 

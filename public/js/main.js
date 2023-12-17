@@ -149,7 +149,7 @@
         $('#destroy-stone-generator').click(function () { handleBuildingAction('destroy-building', 'Stone Generator'); });
         $('#buy-amber-generator').click(function () { handleBuildingAction('buy-building', 'Amber Generator'); });
         $('#destroy-amber-generator').click(function () { handleBuildingAction('destroy-building', 'Amber Generator'); });
-        setInterval(fetchAndUpdatePlayerData, 5000); 
+        setInterval(fetchAndUpdatePlayerData, 750); 
     });
     
 
