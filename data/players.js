@@ -118,6 +118,7 @@ export const loginPlayer = async (username, password) => {
     existingPlayer.wood += r;
     existingPlayer.stone += r;
     existingPlayer.amber += r;
+    existingPlayer.xp += r;
   };
   existingPlayer.tasks = tasks;
   await players.findOneAndUpdate({username: insensitiveCaseUsername}, {$set: existingPlayer});
@@ -299,17 +300,36 @@ export const buyBuilding = async(username, building) => {
   playerGold -= (buildingCostOfBuying.gold + buildingCostOfBuying.gold * costScale);
   playerWood -= (buildingCostOfBuying.wood + buildingCostOfBuying.wood * costScale);
   playerStone -= (buildingCostOfBuying.stone + buildingCostOfBuying.stone * costScale);
+  
+  const currentTasks = existingPlayer.tasks;
+  let xp = existingPlayer.xp;
+  let t2 = currentTasks[1];
+  if (!t2.complete){
+    const currentDate = new Date();
+    t2.complete = true;
+    t2.complete_date = currentDate;
+    
+    const r = t2.reward;
+    xp += r;
+    playerGold += r;
+    playerStone += r;
+    playerStone += r;
+    playerAmber += r;
 
+    currentTasks[1] = t2;
+  };
   
 
   await players.updateOne(
     { username: insensitiveCaseUsername },
     {
       $set: {
+        xp: xp,
         gold: playerGold,
         wood: playerWood,
         stone: playerStone,
         amber: playerAmber,
+        tasks: currentTasks,
         buildings: existingPlayer.buildings,
         lastCollect: currentTime
       }
