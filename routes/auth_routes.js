@@ -93,6 +93,7 @@ try {
     buildings: req.session.player.buildings
   });
 
+
 } catch (error) {
   console.error('Error fetching player buildings:', error);
   res.status(500).render('error');
@@ -118,5 +119,19 @@ router.route('/logout').get(async (req, res) => {
     res.render('logout');
 }
 });
+
+router.post('/buy-building', async (req, res) => {
+  try {
+    const username = req.session.player.username; 
+    const building = req.body.building;
+    const updatedPlayer = await playerHelper.buyBuilding(username, building);
+
+    res.json(updatedPlayer);
+  } catch (error) {
+    console.error('Error in buyBuilding:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 export default router;

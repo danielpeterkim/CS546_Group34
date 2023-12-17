@@ -1,4 +1,4 @@
-import { buildings } from "./mongoCollections.js";
+import { buildings } from "../config/mongoCollections.js";
 import {ObjectId} from 'mongodb';
 import isURL from 'is-url';
 
