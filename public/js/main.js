@@ -83,11 +83,11 @@
     };
 
 
-    async function fetchAndUpdatePlayerData() {
+    async function fetchAndUpdatePlayerData(){
         $.ajax({
             url: '/get-player',
             method: 'POST',
-            success: function (playerData) {
+            success: function (playerData){
                 console.log(playerData);
                 updateResources(playerData);
                 updateBuildings(playerData.buildings);
@@ -98,7 +98,7 @@
         });
     }
 
-    function updateResources(playerData) {
+    function updateResources(playerData){
         resources.gold = playerData.gold;
         resources.wood = playerData.wood;
         resources.stone = playerData.stone;
@@ -110,18 +110,18 @@
         $('#amber').text(resources.amber);
     }
 
-    function updateBuildings(buildings) {
+    function updateBuildings(buildings){
         var buildingsOwnedDiv = $('.buildingsOwned');
         buildingsOwnedDiv.empty();
     
-        for (const [buildingName, count] of Object.entries(buildings)) {
+        for (const [buildingName, count] of Object.entries(buildings)){
             buildingsOwnedDiv.append(`<p>${buildingName}: ${count}</p>`);
         }
     }
     
     
 
-    function handleBuildingAction(action, buildingName) {
+    function handleBuildingAction(action, buildingName){
         $.ajax({
             url: '/' + action,
             method: 'POST',
@@ -140,7 +140,7 @@
         });
     }
 
-    $(document).ready(function () {
+    $(document).ready(function (){
         $('#buy-gold-generator').click(function () { handleBuildingAction('buy-building', 'Gold Generator'); });
         $('#destroy-gold-generator').click(function () { handleBuildingAction('destroy-building', 'Gold Generator'); });
         $('#buy-wood-generator').click(function () { handleBuildingAction('buy-building', 'Wood Generator'); });
@@ -151,6 +151,9 @@
         $('#destroy-amber-generator').click(function () { handleBuildingAction('destroy-building', 'Amber Generator'); });
         setInterval(fetchAndUpdatePlayerData, 750); 
     });
+    
+
+    
     
 
 })(window.jQuery);

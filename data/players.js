@@ -357,3 +357,113 @@ export const destroyBuilding = async(username, building) => {
   );
   return existingPlayer;
 }
+
+
+
+function calculateTotalCost(selectedUnits, allUnits) {
+  let totalCost = { gold: 0, wood: 0, stone: 0, amber: 0 , size : 0};
+
+  for (const unitName in selectedUnits) {
+      const unitAmount = selectedUnits[unitName];
+      const unitInfo = allUnits.find(unit => unit.unitName === unitName);
+
+      if (unitInfo) {
+          totalCost.gold += unitAmount * unitInfo.unitCost.gold;
+          totalCost.wood += unitAmount * unitInfo.unitCost.wood;
+          totalCost.stone += unitAmount * unitInfo.unitCost.stone;
+          totalCost.amber += unitAmount * unitInfo.unitCost.amber;
+          totalCost.size += unitAmount * unitInfo.size;
+      }
+  }
+
+  return totalCost;
+}
+
+
+
+
+// Function to validate selected units against player's resources
+export async function validateUnitPurchase(username, selectedUnits, allUnits) {
+  const player = await getPlayer(username);
+  const totalCost = calculateTotalCost(selectedUnits, allUnits);
+
+  if (totalCost.gold > player.gold ||
+      totalCost.wood > player.wood ||
+      totalCost.stone > player.stone ||
+      totalCost.amber > player.amber) {
+      throw new Error("Not enough resources to purchase selected units.");
+  }
+  if(totalCost.size > player.buildings['Army Camp'] * 10){
+    throw new Error("Not enough space in army camps for selected units.");
+  }
+  return true;
+}
+
+
+
+export function simulateBattle(playerUnits, opponentCityHealth, opponentBuildings) {
+  let cityHealth = opponentCityHealth;
+  let army = [...playerUnits];
+
+  const extraMortalityFromTowers = opponentBuildings['Archer Tower'] * 3 + opponentBuildings['Spell Tower'] * 10;
+
+  while (cityHealth > 0 && army.length > 0) {
+      for (let unit of army) {
+          if (Math.random() * 100 < unit.accuracy) {
+              cityHealth -= unit.damage_per_hit;
+              if (cityHealth <= 0) break;
+          }
+      }
+
+      army = army.filter(unit => Math.random() * 100 >= (unit.mortality + extraMortalityFromTowers));
+  }
+
+  return cityHealth <= 0 ? 'Victory' : 'Defeat';
+}
+
+
+export const createPlayerForSeed = async ({
+  username,
+  password,
+  xp = 0,
+  level = 1,
+  gold = 100,
+  wood = 100,
+  stone = 100,
+  amber = 100,
+  tasks = [],
+  buildings = {}
+}) => {
+  if (!username || !password) {
+      throw new Error("Username and/or password was not supplied");
+  }
+
+  const insensitiveCaseUsername = username.toLowerCase();
+  const players = await playersCollection();
+  const existingPlayer = await players.findOne({ username: insensitiveCaseUsername });
+
+  if (existingPlayer) {
+      throw new Error('A player with that username already exists');
+  }
+  const hashedPassword = await bcrypt.hash(password, 16);
+
+  let newPlayer = {
+      username: username.trim(),
+      password: hashedPassword,
+      xp,
+      level,
+      gold,
+      wood,
+      stone,
+      amber,
+      tasks,
+      buildings,
+      lastCollect: new Date()
+  };
+
+  const insertInfo = await players.insertOne(newPlayer);
+  if (insertInfo.insertedCount === 0) {
+      throw new Error('Could not create player for seed');
+  }
+  return { createdPlayer: true };
+};

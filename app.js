@@ -24,14 +24,18 @@ app.use((req, res, next) => {
   const route = req.originalUrl;
   const isAuthenticated = req.session.player ? "Authenticated Player" : "Non-Authenticated Player";
   console.log(`[${timestamp}]: ${method} ${route} (${isAuthenticated})`);
-// if the user is not signed in (cookie wise) and if the current page isn't login or register than you go to login
+
   if (!req.session.player && (route !== '/login' && route !== '/register')) {
       return res.redirect('/login');
-  } else if (req.session.player  && route !== '/city'  && route !== '/logout' && route !== '/buy-building' && route !== '/destroy-building' && route !== '/get-player') {
-// if the user is signed in and the current page is not city or logout, then you go to city. This is so that players do not need to log in if cookie exist
-// You will need to add to this if statement for each route the player can access (pvp, fighting page, etc.)
+  }
+  if (req.session.player && (route === '/pvp/battleprep' || route === '/pvp/battleresults') && !req.session.inCombat) {
       return res.redirect('/city');
   }
+  //better way to make middleware according to w3schools
+  if (req.session.player && !['/city', '/logout', '/buy-building', '/destroy-building', '/get-player', '/pvp', '/pvp/targeted-battle', '/pvp/random-attack', '/pvp/execute-battle', '/tasks'].includes(route)) {
+      return res.redirect('/city');
+  }
+
   next();
 });
 
@@ -48,6 +52,13 @@ const handlebarsInstance = exphbs.create({
     },
     eq: (v1, v2) => v1 === v2
   }
+});
+//stackoverflow on how to use spaced atrribute objects in handlebars
+handlebarsInstance.handlebars.registerHelper('getProperty', function(object, property){
+  return object[property];
+});
+handlebarsInstance.handlebars.registerHelper('json', function(context){
+  return JSON.stringify(context);
 });
 
 app.engine('handlebars', handlebarsInstance.engine);

@@ -1,7 +1,10 @@
 //import express, express router as shown in lecture code
 import express from 'express';
 import * as playerHelper from "../data/players.js";
+import * as unitHelper from "../data/units.js";
 import xss from 'xss';
+import { players as playersCollection } from '../config/mongoCollections.js';
+
 const router = express.Router();
 
 router.route('/').get(async (req, res) => {
@@ -71,6 +74,22 @@ router
       res.status(400).render('login', { error: e.message });
   }
   });
+function storage_capacity(playerBuildings, resourceType) {
+  let totalCapacity = 0;
+  const baseCapacity = 100; 
+  const capacityIncrease = 200;
+
+  for (const [buildingName, count] of Object.entries(playerBuildings)) {
+      if ((resourceType === 'gold' && buildingName === 'Gold Storage') ||
+          (resourceType === 'amber' && buildingName === 'Amber Storage') ||
+          (resourceType === 'wood' && buildingName === 'Wood Storage') ||
+          (resourceType === 'stone' && buildingName === 'Stone Storage')) {
+          totalCapacity += capacityIncrease * count;
+      }
+  }
+
+  return totalCapacity + baseCapacity;
+}
 
 router.route('/city').get(async (req, res) => {
 try {
@@ -78,25 +97,7 @@ try {
   if(!req.session.player){
     return res.redirect('/login');
   }
-  const currentTime = new Date().toLocaleTimeString();
   const playerBuildings = req.session.player.buildings;
-
-  function storage_capacity(playerBuildings, resourceType) {
-    let totalCapacity = 0;
-    const baseCapacity = 100; 
-    const capacityIncrease = 200;
-
-    for (const [buildingName, count] of Object.entries(playerBuildings)) {
-        if ((resourceType === 'gold' && buildingName === 'Gold Storage') ||
-            (resourceType === 'amber' && buildingName === 'Amber Storage') ||
-            (resourceType === 'wood' && buildingName === 'Wood Storage') ||
-            (resourceType === 'stone' && buildingName === 'Stone Storage')) {
-            totalCapacity += capacityIncrease * count;
-        }
-    }
-
-    return totalCapacity + baseCapacity;
-  }
 
   const goldStorageCapacity = storage_capacity(playerBuildings, 'gold');
   const woodStorageCapacity = storage_capacity(playerBuildings, 'wood');
@@ -129,6 +130,105 @@ try {
 
 });
 
+
+
+router.route('/pvp').get(async (req, res) => {
+  try {
+    if(!req.session.player){
+      return res.redirect('/login');
+    }
+    res.render('pvp');
+
+
+} catch (error) {
+  console.error('Error fetching pvp pages:', error);
+  res.status(500).render('error');
+}
+});
+
+router.post('/pvp/targeted-battle', async (req, res) => {
+  try {
+    let opponentUsername = req.body.targetPlayer;
+    if(!opponentUsername){
+      return res.status(404).render('error', { message: 'No match for player was found'});
+    }
+    const players = await playersCollection();
+    const existingPlayer = await players.findOne({username: opponentUsername.toLowerCase()});
+    if (!existingPlayer){
+      throw new Error("User does not exist");
+    }
+
+    const currentPlayer = req.session.player.username;
+    const userPlayer = await players.findOne({username: currentPlayer.toLowerCase()});
+
+    const allUnits = await unitHelper.getAllUnits();
+    req.session.inCombat = true;
+    res.render('battleprep',{
+      opponent: existingPlayer,
+      units: allUnits,
+      userResources: userPlayer
+    });
+  } catch (error) {
+    console.error('Error in targeted-battle:', error);
+    res.status(500).render('error', {message: 'Server error'});
+  }
+});
+
+
+
+router.post('/pvp/random-attack', async (req, res) => {
+  try {
+    const currentPlayer = req.session.player.username;
+    const players = await playersCollection();
+    //https://stackoverflow.com/questions/2824157/how-can-i-get-a-random-record-from-mongodb
+    const randomOpponent = await players.aggregate([
+        {$match: {username: {$ne: currentPlayer}}},
+        {$sample: {size: 1}}
+    ]).toArray();
+
+    if(randomOpponent.length === 0) {
+        return res.status(404).json({ success: false, message: 'No opponents found'});
+    }
+    const userPlayer = await players.findOne({username: currentPlayer.toLowerCase()});
+
+    const allUnits = await unitHelper.getAllUnits();
+    req.session.inCombat = true;
+    res.render('battleprep',{
+      opponent: randomOpponent[0],
+      units: allUnits,
+      userResources: userPlayer
+    });
+  } catch (error) {
+    console.error('Error in random-battle:', error);
+    res.status(500).render('error', {message: 'Server error'});
+  }
+});
+
+
+router.post('/pvp/execute-battle', async (req, res) => {
+  try {
+    const username = req.session.player.username;
+    const selectedUnits = req.body.units;
+    const opponent = JSON.parse(req.body.opponent);
+    const allUnits = await unitHelper.getAllUnits();
+
+    await playerHelper.validateUnitPurchase(username, selectedUnits, allUnits);
+
+    let unitsArray = Object.keys(selectedUnits).map(unitName => ({
+        ...allUnits.find(unit => unit.unitName === unitName),
+        quantity: selectedUnits[unitName]
+    }));
+    console.log(unitsArray);
+    console.log(opponent.buildings);
+    const result = playerHelper.simulateBattle(unitsArray, opponent.buildings['Castle'] * 10, opponent.buildings);
+    res.render('battleresults', { result: { message: `${result}` } });
+} catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
+
+
 router.route('/tasks').get(async (req, res) => {
   if(!req.session.player){
     return res.redirect('/login');
@@ -142,7 +242,7 @@ router.route('/tasks').get(async (req, res) => {
 
 router.route('/error').get(async (req, res) => {
   res.status(500).render('error');
-});
+}); 
 
 router.route('/logout').get(async (req, res) => {
   if (req.session) {
