@@ -547,3 +547,14 @@ export const deductResources = async (username, totalCost) => {
 
   return true; // Indicating successful resource deduction
 };
+
+export const getTopThree = async () => {
+
+  try {
+    const players = await playersCollection();
+    const best = await players.find().sort({xp: -1}).limit(3).toArray();
+    return best;
+  } catch (error) {
+    throw 'Failed to locate players'
+  }
+}

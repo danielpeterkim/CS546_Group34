@@ -25,11 +25,11 @@ app.use((req, res, next) => {
   const isAuthenticated = req.session.player ? "Authenticated Player" : "Non-Authenticated Player";
   console.log(`[${timestamp}]: ${method} ${route} (${isAuthenticated})`);
 
-  if (!req.session.player && (route !== '/login' && route !== '/register')) {
+  if (!req.session.player && (route !== '/login' && route !== '/register' && route !== '/leaderboard')) {
       return res.redirect('/login');
   }
   //better way to make middleware according to w3schools
-  if (req.session.player && !['/city', '/logout', '/buy-building', '/destroy-building', '/get-player', '/pvp', '/report', '/report-player', '/pvp/targeted-battle', '/pvp/random-attack', '/pvp/execute-battle', '/tasks', '/help'].includes(route)) {
+  if (req.session.player && !['/city', '/logout', '/buy-building', '/destroy-building', '/get-player', '/pvp', '/report', '/report-player', '/pvp/targeted-battle', '/pvp/random-attack', '/pvp/execute-battle', '/tasks', '/help', '/leaderboard'].includes(route)) {
       return res.redirect('/city');
   }
 

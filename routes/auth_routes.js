@@ -314,5 +314,20 @@ router.post('/report-player', async (req, res) => {
     return res.status(500).send({error: error});
   }
 });
+router.route('/leaderboard').get(async (req, res) => {
+  try {
+    const topThree = await playerHelper.getTopThree();
+    const first_place = topThree.length > 0 ? topThree[0].username : 'nobody';
+    const second_place = topThree.length > 1 ? topThree[1].username : 'nobody';
+    const third_place = topThree.length > 2 ? topThree[2].username : 'nobody';
+    console.log(topThree.length);
+    console.log(third_place);
+    return res.render('leaderboard', {first_place: first_place, second_place: second_place, third_place: third_place});
+  } catch (error) {
+    console.log(error);
+    return res.status(500).render('error', { message: 'Error fetching leaderboard. Please try again.' });
+  }
+  
+})
 
 export default router;
