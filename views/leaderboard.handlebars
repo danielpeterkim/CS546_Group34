@@ -3,14 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Leaderboard</title>
+    <style>
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .button:hover {
+            background-color: #373535;
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
     <h1>Leaderboard</h1>
     <ol>
-        <li id="first_place">{{first_place}}</li>
+        <li id="first_place" >{{first_place}}</li>
         <li id="second_place">{{second_place}}</li>
         <li id="third_place">{{third_place}}</li>
     </ol>
-    <a href="/">Go back</a>
+    <a href="/" class = "button">Go back</a>
 </body>
 </html>

@@ -3,17 +3,32 @@
 <head>
     <meta charset="utf-8">
     <title>Options Page</title>
+    <style>
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .button:hover {
+            background-color: #373535;
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
     <h1>Options</h1>
-    <div class = "options">
-        <a href="/help">Click here to read up on how to play the game</a>
-        <br>
-        <a href="/report" class="report-button">Report a Player</a>
-        <br>
-        <a href="/logout">Logout</a>
-        <br><br>
+    <div class="options">
+        <a href="/help" class="button">Read about how to play the game</a>
+        <a href="/report" class="button report-button">Report a Player</a>
+        <a href="/logout" class="button">Logout</a>
     </div>
-    <a href="/city">Return to City</a>
+    <a href="/city" class="button">Return to City</a>
 </body>
 </html>

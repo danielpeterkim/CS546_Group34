@@ -3,12 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>City View</title>
+    <style>
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .button:hover {
+            background-color: #373535;
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
 <div class="city_buttons">
-    <a href="/options">Click here to go to the options menu</a>
+    <a href="/options" class="button">Click here to go to the options menu</a>
     <br>
-    <a href="/tasks">Click here to view your daily tasks</a>
+    <a href="/tasks" class="button">Click here to view your daily tasks</a>
 </div>
 
 <div class="no_buy">
@@ -209,8 +227,8 @@
     </div>
     </div>
 </div>
-<a href="/pvp" class="pvp-button">Go to PvP</a>
-<a href="/leaderboard">Leaderboard</a>
+<a href="/pvp" class="button" >Go to PvP</a>
+<a href="/leaderboard" class="button">Leaderboard</a>
 
 <script>
     var initialResources = {
