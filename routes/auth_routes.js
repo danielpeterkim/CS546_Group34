@@ -250,6 +250,13 @@ router.route('/help').get(async (req, res) => {
   res.render('help')
 });
 
+router.route('/options').get(async (req, res) => {
+  if(!req.session.player){
+    return res.redirect('/login');
+  }
+  res.render('options')
+});
+
 router.route('/error').get(async (req, res) => {
   res.status(500).render('error');
 }); 
