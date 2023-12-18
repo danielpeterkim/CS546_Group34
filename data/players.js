@@ -125,6 +125,22 @@ export const loginPlayer = async (username, password) => {
   delete existingPlayer.password;
   return existingPlayer;
 };
+function storage_capacity(playerBuildings, resourceType) {
+  let totalCapacity = 0;
+  const baseCapacity = 100; 
+  const capacityIncrease = 200;
+
+  for (const [buildingName, count] of Object.entries(playerBuildings)) {
+      if ((resourceType === 'gold' && buildingName === 'Gold Storage') ||
+          (resourceType === 'amber' && buildingName === 'Amber Storage') ||
+          (resourceType === 'wood' && buildingName === 'Wood Storage') ||
+          (resourceType === 'stone' && buildingName === 'Stone Storage')) {
+          totalCapacity += capacityIncrease * count;
+      }
+  }
+
+  return totalCapacity + baseCapacity;
+}
 
 export const getPlayer = async (username) => {
   if(!username){
@@ -137,6 +153,11 @@ export const getPlayer = async (username) => {
     throw new Error("You are not a valid user, please restart");
   }
   delete existingPlayer.password;
+
+  const goldS = storage_capacity(existingPlayer.buildings, 'gold');
+  const woodS = storage_capacity(existingPlayer.buildings, 'woof');
+  const stoneS = storage_capacity(existingPlayer.buildings, 'stone');
+  const amberS = storage_capacity(existingPlayer.buildings, 'amber');
 
   //variables to change, tick, building names
   const tickNumber = 1000;
@@ -171,10 +192,10 @@ export const getPlayer = async (username) => {
     amberGenCount = existingPlayer.buildings[amberGenerator]
   }
 
-  let playerGold = existingPlayer.gold + ticks / tickNumber * goldGenCount * buildingGoldInfo.resourceProduction.gold_prod;
-  let playerWood = existingPlayer.wood + ticks / tickNumber * woodGenCount * buildingWoodInfo.resourceProduction.wood_prod;
-  let playerStone = existingPlayer.stone + ticks / tickNumber * stoneGenCount * buildingStoneInfo.resourceProduction.stone_prod;
-  let playerAmber = existingPlayer.amber + ticks / tickNumber * amberGenCount * buildingAmberInfo.resourceProduction.amber_prod;
+  let playerGold = Math.min(existingPlayer.gold + ticks / tickNumber * goldGenCount * buildingGoldInfo.resourceProduction.gold_prod, goldS );
+  let playerWood = Math.min(existingPlayer.wood + ticks / tickNumber * woodGenCount * buildingWoodInfo.resourceProduction.wood_prod, woodS);
+  let playerStone = Math.min(existingPlayer.stone + ticks / tickNumber * stoneGenCount * buildingStoneInfo.resourceProduction.stone_prod, stoneS);
+  let playerAmber = Math.min(existingPlayer.amber + ticks / tickNumber * amberGenCount * buildingAmberInfo.resourceProduction.amber_prod, amberS);
   await players.updateOne(
     { username: insensitiveCaseUsername },
     {
