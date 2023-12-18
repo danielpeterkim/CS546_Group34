@@ -35,7 +35,7 @@
     <h1>Battle Preparation</h1>
     <p>Opponent: {{opponent.username}}</p>
     <p>Opponent Towers: Archer Towers: {{getProperty opponent.buildings 'Archer Tower'}}, Spell Towers: {{getProperty opponent.buildings 'Spell Tower'}}</p> 
-    <p>Your Resources: Gold: {{userResources.gold}}, Wood: {{userResources.wood}}, Stone: {{userResources.stone}}, Amber: {{userResources.amber}}</p>
+    <p>Your Resources: Gold: {{floor userResources.gold}}, Wood: {{floor userResources.wood}}, Stone: {{ floor userResources.stone}}, Amber: {{floor userResources.amber}}</p>
 
     <form id="battle-form", form action="/pvp/execute-battle" method="POST" onsubmit="return validateResources()">
         {{#each units}}

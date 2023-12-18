@@ -475,7 +475,7 @@ export function simulateBattle(playerUnits, opponentCityHealth, opponentBuilding
       });
   }
 
-  return cityHealth <= 0 ? 'Victory' : 'Defeat';
+  return cityHealth <= 0 && !army ? 'Victory' : 'Defeat';
 }
 
 
@@ -568,6 +568,50 @@ export const deductResources = async (username, totalCost) => {
 
   return true; // Indicating successful resource deduction
 };
+
+export const addResources = async (username) => {
+  if (!username){
+      throw new Error("Missing username or amount information");
+  }
+
+  const players = await playersCollection();
+  const insensitiveCaseUsername = username.toLowerCase();
+  const existingPlayer = await players.findOne({ username: insensitiveCaseUsername });
+
+  if (!existingPlayer) {
+      throw new Error("Player does not exist");
+  }
+  const prize = Math.random() * 100;
+  const updatedResources ={
+      xp: existingPlayer.xp + prize,
+      wood: existingPlayer.wood + prize,
+      stone: existingPlayer.stone + prize,
+      amber: existingPlayer.amber + prize
+  };
+
+  const updateInfo = await players.updateOne(
+      {username: insensitiveCaseUsername},
+      {
+          $set: {
+              xp: updatedResources.xp,
+              wood: updatedResources.wood,
+              stone: updatedResources.stone,
+              amber: updatedResources.amber
+          }
+      }
+  );
+
+  return prize; // Indicating successful resource adding
+};
+
+
+
+
+
+
+
+
+
 
 export const getTopThree = async () => {
 

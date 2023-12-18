@@ -224,7 +224,13 @@ router.post('/pvp/execute-battle', async (req, res) => {
     console.log(unitsArray);
     console.log(opponent.buildings);
     const result = playerHelper.simulateBattle(unitsArray, opponent.buildings['Castle'] * 10, opponent.buildings);
-    res.render('battleresults', { result: { message: `${result}` } });
+    if (result == "Victory"){
+      const prize = await playerHelper.addResources(username);
+      res.render('battleresults', { result: { message: `${result}: you have earned ${prize} XP AND RESOURCES`} });
+    }
+    else{
+      res.render('battleresults', { result: { message: `${result} `} });
+    }
 } catch (error) {
     res.status(400).send(error.message);
   }

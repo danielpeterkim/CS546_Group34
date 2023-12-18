@@ -55,7 +55,8 @@ const handlebarsInstance = exphbs.create({
     eq: (v1, v2) => v1 === v2,
     isEmptyObject: (obj) => {
       return Object.keys(obj).length === 0 && obj.constructor === Object;
-    }
+    },
+    floor: (u) => Math.floor(u)
   }
 });
 //stackoverflow on how to use spaced atrribute objects in handlebars
