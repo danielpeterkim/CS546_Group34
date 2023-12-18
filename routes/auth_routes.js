@@ -166,7 +166,8 @@ router.post('/pvp/targeted-battle', async (req, res) => {
     res.render('battleprep',{
       opponent: existingPlayer,
       units: allUnits,
-      userResources: userPlayer
+      userResources: userPlayer,
+      userBuildings: userPlayer.buildings
     });
   } catch (error) {
     console.error('Error in targeted-battle:', error);
@@ -196,7 +197,8 @@ router.post('/pvp/random-attack', async (req, res) => {
     res.render('battleprep',{
       opponent: randomOpponent[0],
       units: allUnits,
-      userResources: userPlayer
+      userResources: userPlayer,
+      userBuildings: userPlayer.buildings
     });
   } catch (error) {
     console.error('Error in random-battle:', error);
