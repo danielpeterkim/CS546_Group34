@@ -275,7 +275,7 @@ export const buyBuilding = async(username, building) => {
     costScale = 0;
   }
   
-  if(playerGold - (buildingCostOfBuying.gold + buildingCostOfBuying.gold * costScale) < 0 || playerWood - buildingCostOfBuying.wood < 0 || playerStone - buildingCostOfBuying.stone < 0){
+  if(playerGold - (buildingCostOfBuying.gold + buildingCostOfBuying.gold * costScale) < 0 || playerWood - (buildingCostOfBuying.wood + buildingCostOfBuying.wood * costScale) < 0 || playerStone - (buildingCostOfBuying.stone + buildingCostOfBuying.stone * costScale) < 0){
     await players.updateOne(
       { username: insensitiveCaseUsername },
       {

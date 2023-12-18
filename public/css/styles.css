@@ -159,3 +159,7 @@ form label {
 .game-info h1, .game-info p {
     margin: 0 0 10px 0;
 }
+
+.options {
+    font-size: 1.15rem;
+}
