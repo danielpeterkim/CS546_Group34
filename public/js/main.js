@@ -57,10 +57,10 @@
 
     function updateResources(playerData, playerBuildings) {
         const updatedResources = {
-            gold: Math.floor(playerData.gold),
-            wood: Math.floor(playerData.wood),
-            stone: Math.floor(playerData.stone),
-            amber: Math.floor(playerData.amber),
+            gold: Math.min(storage_capacity(playerBuildings, 'gold'), Math.floor(playerData.gold)),
+            wood: Math.min(storage_capacity(playerBuildings, 'wood'), Math.floor(playerData.wood)),
+            stone: Math.min(storage_capacity(playerBuildings, 'stone'), Math.floor(playerData.stone)),
+            amber: Math.min(storage_capacity(playerBuildings, 'amber'), Math.floor(playerData.amber))
         };
     
         // Get storage capacities from playerBuildings
@@ -84,7 +84,6 @@
         }
     
         // Update the resource displays
-        er.hidden = true;
         $('#gold').text(updatedResources.gold);
         $('#wood').text(updatedResources.wood);
         $('#stone').text(updatedResources.stone);
@@ -110,7 +109,6 @@
     
 
     function handleBuildingAction(action, buildingName){
-        er.hidden = true;
         $.ajax({
             url: '/' + action,
             method: 'POST',
@@ -122,6 +120,7 @@
             success: function (response) {
                 updateResources(response.resources);
                 updateBuildings(response.buildings);
+                er.hidden = true;
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error('Error with building action:', textStatus, errorThrown);
