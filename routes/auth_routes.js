@@ -135,7 +135,8 @@ router.post('/pvp/targeted-battle', async (req, res) => {
     res.render('battleprep',{
       opponent: existingPlayer,
       units: allUnits,
-      userResources: userPlayer
+      userResources: userPlayer,
+      userBuildings: userPlayer.buildings
     });
   } catch (error) {
     console.error('Error in targeted-battle:', error);
@@ -165,7 +166,8 @@ router.post('/pvp/random-attack', async (req, res) => {
     res.render('battleprep',{
       opponent: randomOpponent[0],
       units: allUnits,
-      userResources: userPlayer
+      userResources: userPlayer,
+      userBuildings: userPlayer.buildings
     });
   } catch (error) {
     console.error('Error in random-battle:', error);
@@ -208,6 +210,13 @@ router.route('/tasks').get(async (req, res) => {
     reward: req.session.player.level,
     username: req.session.player.username
   })
+});
+
+router.route('/help').get(async (req, res) => {
+  if(!req.session.player){
+    return res.redirect('/login');
+  }
+  res.render('help')
 });
 
 router.route('/error').get(async (req, res) => {

@@ -110,6 +110,7 @@
     
 
     function handleBuildingAction(action, buildingName){
+        er.hidden = true;
         $.ajax({
             url: '/' + action,
             method: 'POST',

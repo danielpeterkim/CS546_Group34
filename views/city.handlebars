@@ -28,50 +28,178 @@
     </ul>
 </div>
 
-<div class="buildingsOwned">
-    {{#if (isEmptyObject buildings)}}
-        <p id="noBuildingsText">You have no buildings.</p>
-    {{else}}
-        {{#each orderedBuildingsList}}
-            {{#if (propertyExists ../buildings @key)}}
-                <div class="buildingRow">
-                    <img src="{{this.icon}}" alt="{{@key}}" />
-                    <span>{{@key}}</span>
-                    <span>{{this.buildingDescription}}</span>
-                    <span>Count: {{lookup ../buildings @key}}</span>
+<div class = "row">
+    <div class="column">
+        <div id="buildings" class = "row">
+            <div class = "column">
+                <p>Gold Generator</p>
+                <div class="row">
+                    <div class = "btn-build">
+                        <div class="column"> 
+                            <button id="destroy-gold-generator">-</button>
+                        </div>
+                        <div class="column">
+                            <button id="buy-gold-generator">+</button>
+                        </div>    
+                    </div> 
                 </div>
-            {{/if}}
-        {{/each}}
-    {{/if}}
+                <p>Wood Generator</p>
+                <div class="row">
+                    <div class = "btn-build">
+                        <div class="column"> 
+                            <button id="destroy-wood-generator">-</button>
+                        </div>
+                        <div class="column">
+                            <button id="buy-wood-generator">+</button>
+                        </div>    
+                    </div> 
+                </div>
+                <p>Stone Generator</p>
+                <div class="row">
+                    <div class = "btn-build">
+                        <div class="column"> 
+                            <button id="destroy-stone-generator">-</button>
+                        </div>
+                        <div class="column">
+                            <button id="buy-stone-generator">+</button>
+                        </div>
+                    </div>    
+                </div> 
+                <p>Amber Generator</p>
+                <div class="row">
+                    <div class = "btn-build">
+                        <div class="column"> 
+                            <button id="destroy-amber-generator">-</button>
+                        </div>
+                        <div class="column">
+                            <button id="buy-amber-generator">+</button>
+                        </div>    
+                    </div> 
+                </div>
+                <p>Archer Tower</p>
+                <div class="row">
+                    <div class = "btn-build">
+                        <div class="column"> 
+                            <button id="destroy-archer-tower">-</button>
+                        </div>
+                        <div class="column">
+                            <button id="buy-archer-tower">+</button>
+                        </div>    
+                    </div> 
+                </div>
+                <p>Spell Tower</p>
+                <div class="row">
+                    <div class = "btn-build">
+                        <div class="column"> 
+                            <button id="destroy-spell-tower">-</button>
+                        </div>
+                        <div class="column">
+                            <button id="buy-spell-tower">+</button>
+                        </div>    
+                    </div> 
+                </div>
+                <p>Barracks</p>
+                <div class="row">
+                    <div class = "btn-build">
+                        <div class="column"> 
+                            <button id="destroy-barracks">-</button>
+                        </div>
+                        <div class="column">
+                            <button id="buy-barracks">+</button>
+                        </div>    
+                    </div> 
+                </div>
+            </div>
+            <div class = "column">
+                <p>Gold Storage</p>
+                <div class="row">
+                    <div class = "btn-build">
+                        <div class="column"> 
+                            <button id="destroy-gold-storage">-</button>
+                        </div>
+                        <div class="column">
+                            <button id="buy-gold-storage">+</button>
+                        </div>    
+                    </div> 
+                </div>
+                <p>Wood Storage</p>
+                <div class="row">
+                    <div class = "btn-build">
+                        <div class="column"> 
+                            <button id="destroy-wood-storage">-</button>
+                        </div>
+                        <div class="column">
+                            <button id="buy-wood-storage">+</button>
+                        </div>    
+                    </div> 
+                </div>
+                <p>Stone Storage</p>
+                <div class="row">
+                    <div class = "btn-build">
+                        <div class="column"> 
+                            <button id="destroy-stone-storage">-</button>
+                        </div>
+                        <div class="column">
+                            <button id="buy-stone-storage">+</button>
+                        </div>    
+                    </div> 
+                </div>
+                <p>Amber Storage</p>
+                <div class="row">
+                    <div class = "btn-build">
+                        <div class="column"> 
+                            <button id="destroy-amber-storage">-</button>
+                        </div>
+                        <div class="column">
+                            <button id="buy-amber-storage">+</button>
+                        </div>    
+                    </div> 
+                </div>
+                
+                <p>Magic Academy</p>
+                <div class="row">
+                    <div class = "btn-build">
+                        <div class="column"> 
+                            <button id="destroy-magic-academy">-</button>
+                        </div>
+                        <div class="column">
+                            <button id="buy-magic-academy">+</button>
+                        </div>    
+                    </div> 
+                </div>
+                <p>Army Camp</p>
+                <div class="row">
+                    <div class = "btn-build">
+                        <div class="column"> 
+                            <button id="destroy-army-camp">-</button>
+                        </div>
+                        <div class="column">
+                            <button id="buy-army-camp">+</button>
+                        </div>    
+                    </div> 
+                </div>
+            </div>
+    </div>  
 </div>
-
-<div id="buildings">
-<button id="buy-gold-generator">Buy Gold Generator</button>
-<button id="destroy-gold-generator">Destroy Gold Generator</button>
-<button id="buy-wood-generator">Buy Wood Generator</button>
-<button id="destroy-wood-generator">Destroy Wood Generator</button>
-<button id="buy-stone-generator">Buy Stone Generator</button>
-<button id="destroy-stone-generator">Destroy Stone Generator</button>
-<button id="buy-amber-generator">Buy Amber Generator</button>
-<button id="destroy-amber-generator">Destroy Amber Generator</button>
-<button id="buy-gold-storage">Buy Gold Storage</button>
-<button id="destroy-gold-storage">Destroy Gold Storage</button>
-<button id="buy-wood-storage">Buy Wood Storage</button>
-<button id="destroy-wood-storage">Destroy Wood Storage</button>
-<button id="buy-stone-storage">Buy Stone Storage</button>
-<button id="destroy-stone-storage">Destroy Stone Storage</button>
-<button id="buy-amber-storage">Buy Amber Storage</button>
-<button id="destroy-amber-storage">Destroy Amber Storage</button>
-<button id="buy-archer-tower">Buy Archer Tower</button>
-<button id="destroy-archer-tower">Destroy Archer Tower</button>
-<button id="buy-spell-tower">Buy Spell Tower</button>
-<button id="destroy-spell-tower">Destroy Spell Tower</button>
-<button id="buy-barracks">Buy Barracks</button>
-<button id="destroy-barracks">Destroy Barracks</button>
-<button id="buy-magic-academy">Buy Magic Academy</button>
-<button id="destroy-magic-academy">Destroy Magic Academy</button>
-<button id="buy-army-camp">Buy Army Camp</button>
-<button id="destroy-army-camp">Destroy Army Camo</button>
+    <div class="column">
+        <div class="buildingsOwned">
+            {{#if (isEmptyObject buildings)}}
+                <p id="noBuildingsText">You have no buildings.</p>
+            {{else}}
+                {{#each orderedBuildingsList}}
+                    {{#if (propertyExists ../buildings @key)}}
+                        <div class="buildingRow">
+                            <img src="{{this.icon}}" alt="{{@key}}" />
+                            <span>{{@key}}</span>
+                            <span>{{this.buildingDescription}}</span>
+                            <span>Count: {{lookup ../buildings @key}}</span>
+                        </div>
+                    {{/if}}
+                {{/each}}
+            {{/if}}
+        </div>
+    </div>
+    </div>
 </div>
 <a href="/pvp" class="pvp-button">Go to PvP</a>
 <a href="/report" class="report-button">Report a Player</a>

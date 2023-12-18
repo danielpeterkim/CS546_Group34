@@ -1,17 +1,23 @@
-<h1>PvP</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>PvP Page</title>
+</head>
+<body>
+    <h1>PvP</h1>
 
-<div class="pvp">
-    <div class="pvpButtons">
-        <form action="/pvp/random-attack" method="POST">
-            <button type="submit" id="random-attack">Attack Random Player</button>
-        </form>
+    <div class="pvp">
+        <div class="pvpButtons">
+            <form action="/pvp/random-attack" method="POST">
+                <button type="submit" id="random-attack">Attack Random Player</button>
+            </form>
 
-        <form id="target-attack" action="/pvp/targeted-battle" method="POST">
-            <input type="text" name="targetPlayer" placeholder="Enter player name">
-            <button type="submit">Attack Specific Player</button>
-        </form>
+            <form id="target-attack" action="/pvp/targeted-battle" method="POST">
+                <input type="text" name="targetPlayer" placeholder="Enter player name">
+                <button type="submit">Attack Specific Player</button>
+            </form>
+        </div>
     </div>
-</div>
-
-
-     
+</body>
+</html>

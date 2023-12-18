@@ -101,3 +101,61 @@ form label {
     height: auto;
     margin-right: 10px;
 }
+
+.btn-build{
+    width: 30%;
+    
+}
+
+.column {
+    float: left;
+    width: 50%;
+  }
+
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+.content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+.game-info {
+    flex: 1;
+    margin-right: 20px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.login-container {
+    flex-basis: 300px; 
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.game-info ul {
+    list-style: none;
+    padding: 0;
+}
+
+.game-info ul li {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.game-info ul li:last-child {
+    border-bottom: none;
+}
+
+.game-info h1, .game-info p {
+    margin: 0 0 10px 0;
+}
