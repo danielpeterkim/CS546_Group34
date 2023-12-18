@@ -1,16 +1,41 @@
-<h1>Login</h1>
-{{#if error}}
-    <p class="error">{{error}}</p>
-{{/if}}
-<form id="login-form" action="/login" method="post">
-    <label for="usernameInput">Username</label>
-    <input type="text" name="usernameInput" id="usernameInput" required>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Login to Mongo City Builder</title>
+    <link rel="stylesheet" href="path_to_your_stylesheet.css">
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="game-info">
+            <h1>Welcome to Mongo City Builder!</h1>
+            <p>Mongo City Builder is an interactive city-building simulator where you can construct your dream city and engage in exciting PVP battles. Here's what you need to know:</p>
+            <ul>
+                <li><strong>Daily Tasks</strong>: Complete tasks for resources and XP.</li>
+                <li><strong>Building Your City</strong>: Purchase various types of buildings using your resources.</li>
+                <li><strong>Engage in PVP Battles</strong>: Challenge other players and plan your attack with the right troops.</li>
+                <li><strong>Strategy and Planning</strong>: Be strategic about your army composition for PVP battles.</li>
+            </ul>
+            <p>Ready to build and battle? Jump into the action and start creating your city now!</p>
+        </div>
 
-    <label for="passwordInput">Password</label>
-    <input type="password" name="passwordInput" id="passwordInput" required>
+        <div class="login-container">
+            <h1>Login</h1>
+            {{#if error}}
+                <p class="error">{{error}}</p>
+            {{/if}}
+            <form id="login-form" action="/login" method="post">
+                <label for="usernameInput">Username</label>
+                <input type="text" name="usernameInput" id="usernameInput" required>
 
-    <button type="submit">Login</button>
-</form>
+                <label for="passwordInput">Password</label>
+                <input type="password" name="passwordInput" id="passwordInput" required>
 
-<a href="/register">Click here to register!</a>
-<a href="/leaderboard">Leaderboard</a>
+                <button type="submit">Login</button>
+            </form>
+            <a href="/leaderboard">Leaderboard</a>
+            <a href="/register">Click here to register!</a>
+        </div>
+    </div>
+</body>
+</html>

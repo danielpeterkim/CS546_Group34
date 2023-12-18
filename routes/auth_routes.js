@@ -1,7 +1,6 @@
 //import express, express router as shown in lecture code
 import express from 'express';
 import * as playerHelper from "../data/players.js";
-import {createReport} from '../data/reports.js';
 import * as unitHelper from "../data/units.js";
 import xss from 'xss';
 import { players as playersCollection } from '../config/mongoCollections.js';
@@ -20,7 +19,7 @@ router
     if (req.session.player) {
       return res.render('/city');
     }
-    return res.render('register');
+    res.render('register');
   })
   .post(async (req, res) => {
     try {
@@ -43,9 +42,9 @@ router
           throw new Error('Passwords do not match');
       }
       const newplayer = await playerHelper.registerPlayer(usernameInput.trim(), passwordInput.trim(), confirmPasswordInput.trim());
-      return res.redirect('/login');
+      res.redirect('/login');
   }catch (e){
-      return res.status(400).render('register', {error: e.message});
+      res.status(400).render('register', {error: e.message});
   }
   });
 
@@ -55,7 +54,7 @@ router
     if (req.session.player) {
       return res.redirect('/city');
     }
-    return res.render('login');  })
+    res.render('login');  })
   .post(async (req, res) => {
     try {
       //const{usernameInput, passwordInput} = req.body;
@@ -70,66 +69,36 @@ router
       }
       const player = await playerHelper.loginPlayer(usernameInput, passwordInput);
       req.session.player = player;
-      return res.redirect('/city')
+      res.redirect('/city')
   } catch (e) {
-      return res.status(400).render('login', { error: e.message });
+      res.status(400).render('login', { error: e.message });
   }
   });
-function storage_capacity(playerBuildings, resourceType) {
-  let totalCapacity = 0;
-  const baseCapacity = 100; 
-  const capacityIncrease = 200;
 
-  for (const [buildingName, count] of Object.entries(playerBuildings)) {
-      if ((resourceType === 'gold' && buildingName === 'Gold Storage') ||
-          (resourceType === 'amber' && buildingName === 'Amber Storage') ||
-          (resourceType === 'wood' && buildingName === 'Wood Storage') ||
-          (resourceType === 'stone' && buildingName === 'Stone Storage')) {
-          totalCapacity += capacityIncrease * count;
+  router.route('/city').get(async (req, res) => {
+    try {
+      if (!req.session.player) {
+        return res.redirect('/login');
       }
-  }
-
-  return totalCapacity + baseCapacity;
-}
-
-router.route('/city').get(async (req, res) => {
-try {
-
-  if(!req.session.player){
-    return res.redirect('/login');
-  }
-  const playerBuildings = req.session.player.buildings;
-
-  const goldStorageCapacity = storage_capacity(playerBuildings, 'gold');
-  const woodStorageCapacity = storage_capacity(playerBuildings, 'wood');
-  const stoneStorageCapacity = storage_capacity(playerBuildings, 'stone');
-  const amberStorageCapacity = storage_capacity(playerBuildings, 'amber');
-  //added all the player database info for use in city. you can access these in city by calling on their variable names
-  // console.log(req.session.player.username.trim());
-  // console.log(req.session.player.gold);
-  return res.render('city',{
-    username: req.session.player.username.trim(),
-    xp: req.session.player.xp,
-    level: req.session.player.level,
-    gold: req.session.player.gold,
-    wood: req.session.player.wood,
-    stone: req.session.player.stone,
-    amber: req.session.player.amber,
-    tasks: req.session.player.tasks,
-    buildings: req.session.player.buildings,
-    goldStorageCapacity,
-    woodStorageCapacity,
-    stoneStorageCapacity,
-    amberStorageCapacity
+  
+      // Removed the storage_capacity calculations
+      res.render('city', {
+        username: req.session.player.username.trim(),
+        xp: req.session.player.xp,
+        level: req.session.player.level,
+        gold: req.session.player.gold,
+        wood: req.session.player.wood,
+        stone: req.session.player.stone,
+        amber: req.session.player.amber,
+        tasks: req.session.player.tasks,
+        buildings: req.session.player.buildings,
+      });
+    } catch (error) {
+      console.error('Error fetching player buildings:', error);
+      res.status(500).render('error');
+    }
   });
-
-
-} catch (error) {
-  console.error('Error fetching player buildings:', error);
-  return res.status(500).render('error');
-}
-
-});
+  
 
 
 
@@ -161,12 +130,29 @@ router.post('/pvp/targeted-battle', async (req, res) => {
     const currentPlayer = req.session.player.username;
     const userPlayer = await players.findOne({username: currentPlayer.toLowerCase()});
 
+    const tasks = userPlayer.tasks;
+    const date = new Date();
+    let t3 = tasks[2];
+    let r = t3.reward;
+    if(!t3.complete){
+      t3.complete = true;
+      t3.complete_date = date;
+      userPlayer.gold += r;
+      userPlayer.wood += r;
+      userPlayer.stone += r;
+      userPlayer.amber += r;
+      userPlayer.xp += r;
+    };
+    userPlayer.tasks[2] = t3;
+    await players.findOneAndUpdate({username: currentPlayer.toLowerCase()}, {$set: userPlayer});
+
     const allUnits = await unitHelper.getAllUnits();
     req.session.inCombat = true;
     res.render('battleprep',{
       opponent: existingPlayer,
       units: allUnits,
-      userResources: userPlayer
+      userResources: userPlayer,
+      userBuildings: userPlayer.buildings
     });
   } catch (error) {
     console.error('Error in targeted-battle:', error);
@@ -191,12 +177,29 @@ router.post('/pvp/random-attack', async (req, res) => {
     }
     const userPlayer = await players.findOne({username: currentPlayer.toLowerCase()});
 
+    const tasks = userPlayer.tasks;
+    const date = new Date();
+    let t3 = tasks[2];
+    let r = t3.reward;
+    if(!t3.complete){
+      t3.complete = true;
+      t3.complete_date = date;
+      userPlayer.gold += r;
+      userPlayer.wood += r;
+      userPlayer.stone += r;
+      userPlayer.amber += r;
+      userPlayer.xp += r;
+    };
+    userPlayer.tasks[2] = t3;
+    await players.findOneAndUpdate({username: currentPlayer.toLowerCase()}, {$set: userPlayer});
+    
     const allUnits = await unitHelper.getAllUnits();
     req.session.inCombat = true;
     res.render('battleprep',{
       opponent: randomOpponent[0],
       units: allUnits,
-      userResources: userPlayer
+      userResources: userPlayer,
+      userBuildings: userPlayer.buildings
     });
   } catch (error) {
     console.error('Error in random-battle:', error);
@@ -234,7 +237,7 @@ router.route('/tasks').get(async (req, res) => {
   if(!req.session.player){
     return res.redirect('/login');
   }
-  return res.render('tasks', {
+  res.render('tasks', {
     tasks: req.session.player.tasks,
     reward: req.session.player.level,
     username: req.session.player.username
@@ -249,8 +252,8 @@ router.route('/help').get(async (req, res) => {
 });
 
 router.route('/error').get(async (req, res) => {
-  return res.status(500).render('error');
-});
+  res.status(500).render('error');
+}); 
 
 router.route('/logout').get(async (req, res) => {
   if (req.session) {
@@ -260,18 +263,11 @@ router.route('/logout').get(async (req, res) => {
             return res.status(500).render('error', { message: 'Error logging out. Please try again.' });
         }
         res.clearCookie('AuthState');
-        return res.render('logout');
+        res.render('logout');
     });
-  } else {
-      return res.render('logout');
-  }
-});
-
-router.route('/report').get(async (req, res) => {
-  if(!req.session.player){
-    return res.redirect('/login');
-  }
-  return res.render('report', {name: req.session.player.username});
+} else {
+    res.render('logout');
+}
 });
 
 router.post('/buy-building', async (req, res) => {
@@ -280,10 +276,10 @@ router.post('/buy-building', async (req, res) => {
     const building = req.body.building;
     const updatedPlayer = await playerHelper.buyBuilding(username, building);
 
-    return res.json(updatedPlayer);
+    res.json(updatedPlayer);
   } catch (error) {
     console.error('Error in buyBuilding:', error);
-    return res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 });
 router.post('/destroy-building', async (req, res) => {
@@ -292,26 +288,18 @@ router.post('/destroy-building', async (req, res) => {
     const building = req.body.building;
     const updatedPlayer = await playerHelper.destroyBuilding(username, building);
 
-    return res.json(updatedPlayer);
+    res.json(updatedPlayer);
   } catch (error) {
     console.error('Error in destroyBuilding:', error);
-    return res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 });
 router.post('/get-player', async (req, res) => {
   try {
     const playerData = await playerHelper.getPlayer(req.session.player.username);
-    return res.json(playerData);
+    res.json(playerData);
   } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-});
-router.post('/report-player', async (req, res) => {
-  try {
-    const reportData = await createReport(req.session.player.username, req.body.reportedPlayer, req.body.reportData);
-    return res.json(reportData);
-  } catch (error) {
-    return res.status(500).send({error: error});
+    res.status(500).json({ error: error.message });
   }
 });
 router.route('/leaderboard').get(async (req, res) => {
