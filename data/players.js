@@ -120,7 +120,7 @@ export const loginPlayer = async (username, password) => {
     existingPlayer.amber += r;
     existingPlayer.xp += r;
   };
-  existingPlayer.tasks = tasks;
+  existingPlayer.tasks[0] = t1;
   await players.findOneAndUpdate({username: insensitiveCaseUsername}, {$set: existingPlayer});
   delete existingPlayer.password;
   return existingPlayer;

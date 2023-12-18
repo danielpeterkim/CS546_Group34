@@ -130,6 +130,22 @@ router.post('/pvp/targeted-battle', async (req, res) => {
     const currentPlayer = req.session.player.username;
     const userPlayer = await players.findOne({username: currentPlayer.toLowerCase()});
 
+    const tasks = userPlayer.tasks;
+    const date = new Date();
+    let t3 = tasks[2];
+    let r = t3.reward;
+    if(!t3.complete){
+      t3.complete = true;
+      t3.complete_date = date;
+      userPlayer.gold += r;
+      userPlayer.wood += r;
+      userPlayer.stone += r;
+      userPlayer.amber += r;
+      userPlayer.xp += r;
+    };
+    userPlayer.tasks[2] = t3;
+    await players.findOneAndUpdate({username: currentPlayer.toLowerCase()}, {$set: userPlayer});
+
     const allUnits = await unitHelper.getAllUnits();
     req.session.inCombat = true;
     res.render('battleprep',{
@@ -161,6 +177,22 @@ router.post('/pvp/random-attack', async (req, res) => {
     }
     const userPlayer = await players.findOne({username: currentPlayer.toLowerCase()});
 
+    const tasks = userPlayer.tasks;
+    const date = new Date();
+    let t3 = tasks[2];
+    let r = t3.reward;
+    if(!t3.complete){
+      t3.complete = true;
+      t3.complete_date = date;
+      userPlayer.gold += r;
+      userPlayer.wood += r;
+      userPlayer.stone += r;
+      userPlayer.amber += r;
+      userPlayer.xp += r;
+    };
+    userPlayer.tasks[2] = t3;
+    await players.findOneAndUpdate({username: currentPlayer.toLowerCase()}, {$set: userPlayer});
+    
     const allUnits = await unitHelper.getAllUnits();
     req.session.inCombat = true;
     res.render('battleprep',{
