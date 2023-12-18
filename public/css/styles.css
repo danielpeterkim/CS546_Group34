@@ -101,18 +101,19 @@ form label {
     height: auto;
     margin-right: 10px;
 }
-.content-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 20px;
+
+.btn-build{
+    width: 30%;
+    
 }
 
-.game-info {
-    width: 45%; /* Adjust the width as needed */
-}
+.column {
+    float: left;
+    width: 50%;
+  }
 
-.login-container {
-    width: 45%; /* Adjust the width as needed */
-    text-align: left;
-}
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
