@@ -28,6 +28,11 @@ app.use((req, res, next) => {
   if (!req.session.player && (route !== '/login' && route !== '/register' && route !== '/leaderboard')) {
       return res.redirect('/login');
   }
+  if (req.session.player && (route === '/login')) {
+    return res.redirect('/city');
+}
+
+
   //better way to make middleware according to w3schools
   if (req.session.player && !['/city', '/logout', '/buy-building', '/destroy-building', '/get-player', '/pvp', '/report', '/report-player', '/pvp/targeted-battle', '/pvp/random-attack', '/pvp/execute-battle', '/tasks', '/help', '/options', '/leaderboard'].includes(route)) {
       return res.redirect('/city');
