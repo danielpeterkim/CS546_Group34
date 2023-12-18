@@ -60,7 +60,7 @@ export const registerPlayer = async (
     stone: 0,
     amber: 0,
     tasks: [task1, task2, task3],
-    buildings: {},
+    buildings: {"Castle": 1},
     lastCollect: Date.now(),
   }
 
