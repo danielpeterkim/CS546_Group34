@@ -25,7 +25,7 @@ app.use((req, res, next) => {
   const isAuthenticated = req.session.player ? "Authenticated Player" : "Non-Authenticated Player";
   console.log(`[${timestamp}]: ${method} ${route} (${isAuthenticated})`);
 
-  if (!req.session.player && (route !== '/login' && route !== '/register')) {
+  if (!req.session.player && (route !== '/login' && route !== '/register' && route !== '/leaderboard')) {
       return res.redirect('/login');
   }
   //better way to make middleware according to w3schools

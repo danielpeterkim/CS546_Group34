@@ -2,6 +2,7 @@
 import express from 'express';
 import * as playerHelper from "../data/players.js";
 import * as unitHelper from "../data/units.js";
+import {createReport} from '../data/reports.js';
 import xss from 'xss';
 import { players as playersCollection } from '../config/mongoCollections.js';
 
@@ -130,6 +131,22 @@ router.post('/pvp/targeted-battle', async (req, res) => {
     const currentPlayer = req.session.player.username;
     const userPlayer = await players.findOne({username: currentPlayer.toLowerCase()});
 
+    const tasks = userPlayer.tasks;
+    const date = new Date();
+    let t3 = tasks[2];
+    let r = t3.reward;
+    if(!t3.complete){
+      t3.complete = true;
+      t3.complete_date = date;
+      userPlayer.gold += r;
+      userPlayer.wood += r;
+      userPlayer.stone += r;
+      userPlayer.amber += r;
+      userPlayer.xp += r;
+    };
+    userPlayer.tasks[2] = t3;
+    await players.findOneAndUpdate({username: currentPlayer.toLowerCase()}, {$set: userPlayer});
+
     const allUnits = await unitHelper.getAllUnits();
     req.session.inCombat = true;
     res.render('battleprep',{
@@ -143,8 +160,6 @@ router.post('/pvp/targeted-battle', async (req, res) => {
     res.render('error', {message: 'An error occurred'});
   }
 });
-
-
 
 router.post('/pvp/random-attack', async (req, res) => {
   try {
@@ -161,6 +176,22 @@ router.post('/pvp/random-attack', async (req, res) => {
     }
     const userPlayer = await players.findOne({username: currentPlayer.toLowerCase()});
 
+    const tasks = userPlayer.tasks;
+    const date = new Date();
+    let t3 = tasks[2];
+    let r = t3.reward;
+    if(!t3.complete){
+      t3.complete = true;
+      t3.complete_date = date;
+      userPlayer.gold += r;
+      userPlayer.wood += r;
+      userPlayer.stone += r;
+      userPlayer.amber += r;
+      userPlayer.xp += r;
+    };
+    userPlayer.tasks[2] = t3;
+    await players.findOneAndUpdate({username: currentPlayer.toLowerCase()}, {$set: userPlayer});
+    
     const allUnits = await unitHelper.getAllUnits();
     req.session.inCombat = true;
     res.render('battleprep',{
@@ -275,6 +306,37 @@ router.post('/get-player', async (req, res) => {
     res.json(playerData);
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+router.route('/leaderboard').get(async (req, res) => {
+  try {
+    const topThree = await playerHelper.getTopThree();
+    const first_place = topThree.length > 0 ? topThree[0].username : 'nobody';
+    const second_place = topThree.length > 1 ? topThree[1].username : 'nobody';
+    const third_place = topThree.length > 2 ? topThree[2].username : 'nobody';
+    console.log(topThree.length);
+    console.log(third_place);
+    return res.render('leaderboard', {first_place: first_place, second_place: second_place, third_place: third_place});
+  } catch (error) {
+    console.log(error);
+    return res.status(500).render('error', { message: 'Error fetching leaderboard. Please try again.' });
+  }
+  
+});
+
+router.route('/report').get(async (req, res) => {
+  if(!req.session.player){
+    return res.redirect('/login');
+  }
+  return res.render('report', {name: req.session.player.username});
+});
+
+router.post('/report-player', async (req, res) => {
+  try {
+    const reportData = await createReport(req.session.player.username, req.body.reportedPlayer, req.body.reportData);
+    return res.json(reportData);
+  } catch (error) {
+    return res.status(500).send({error: error});
   }
 });
 
