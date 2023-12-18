@@ -17,7 +17,7 @@ async function seedBuildings() {
                 buildingCost: { gold: 100, wood: 100, stone: 100 },
                 unlockLevel: 1,
                 lethality:{ dmg_to_unarmored: 0, dmg_to_armored: 0, dmg_to_magic: 0 },
-                resourceProduction: { gold_prod: 0, wood_prod: 0, stone_prod: 0, amber_prod: 0},
+                resourceProduction: { gold_prod: 1, wood_prod: 0, stone_prod: 0, amber_prod: 0},
                 icon: 'https://i.ibb.co/TYfmdXs/Castle.png' 
             },
             {
