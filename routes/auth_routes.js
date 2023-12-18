@@ -2,6 +2,7 @@
 import express from 'express';
 import * as playerHelper from "../data/players.js";
 import * as unitHelper from "../data/units.js";
+import {createReport} from '../data/reports.js';
 import xss from 'xss';
 import { players as playersCollection } from '../config/mongoCollections.js';
 
@@ -160,8 +161,6 @@ router.post('/pvp/targeted-battle', async (req, res) => {
   }
 });
 
-
-
 router.post('/pvp/random-attack', async (req, res) => {
   try {
     const currentPlayer = req.session.player.username;
@@ -316,6 +315,22 @@ router.route('/leaderboard').get(async (req, res) => {
     return res.status(500).render('error', { message: 'Error fetching leaderboard. Please try again.' });
   }
   
-})
+});
+
+router.route('/report').get(async (req, res) => {
+  if(!req.session.player){
+    return res.redirect('/login');
+  }
+  return res.render('report', {name: req.session.player.username});
+});
+
+router.post('/report-player', async (req, res) => {
+  try {
+    const reportData = await createReport(req.session.player.username, req.body.reportedPlayer, req.body.reportData);
+    return res.json(reportData);
+  } catch (error) {
+    return res.status(500).send({error: error});
+  }
+});
 
 export default router;
