@@ -1,80 +1,4 @@
 (function ($) {
-    // const timeInterval = 5000;
-
-    // let firstTime = Date.now();
-    // let currentTime = firstTime;
-    // let updates = 0;
-    // let newUpdates = 0;
-
-    // let resources = {gold: 120, wood: 0, stone: 0, amber: 0};
-    // let resourceProduction = {gold: 1, wood: 0, stone: 0, amber: 0};
-
-    // let buildings = [
-    //     {
-    //         _id: '1',
-    //         buildingName: 'Coin Generator', 
-    //         buildingDescription: 'Generates 1 gold for your city.', 
-    //         buildingCost: {gold: 40},
-    //         unlockLevel: 0,
-    //         lethality: 0,
-    //         resourceProduction: {gold: 1},
-    //         icon: null
-    //     },
-
-    //     {
-    //         _id: '2',
-    //         buildingName: 'Amber Generator',
-    //         buildingDescription: 'Generates 1 amber for your city.',
-    //         buildingCost: {gold: 50},
-    //         unlockLevel: 0,
-    //         lethality: 0,
-    //         resourceProduction: {amber: 1},
-    //         icon: null
-    //     }
-    // ]
-
-    // let resourcesToString = (prodValue) => {
-    //     let s = '('
-
-    //     for (const [type, amount] of Object.entries(prodValue)) {
-    //         s += `${amount} ${type}, `
-    //     }
-
-    //     s = s.slice(0, s.length-2);
-    //     s += ')';
-
-    //     return s;
-    // }
-
-    // $(document).ready(function(){
-    //     for (b of buildings) {
-    //         $('.buyButtons').append(`<button id=button_${b._id}>+ ${b.buildingName} ${resourcesToString(b.buildingCost)}</button>`)
-    //     }
-    // });
-    
-
-    // let buildingsOwned = {};
-
-    // let showResources = () => {
-    //     $('#resourceText').text(`gold: ${resources.gold} (+${resourceProduction.gold}), wood: ${resources.wood} (+${resourceProduction.wood}), stone: ${resources.stone} (+${resourceProduction.stone}), amber: ${resources.amber} (+${resourceProduction.amber})`);
-    // }
-
-    // showResources();
-
-    // let passiveResourceUpdate = () => {
-    //     console.log('updating');
-    //     $(document).ready(function(){
-    //         currentTime = Date.now();
-    //         newUpdates = Math.floor((currentTime - firstTime)/timeInterval);
-    //         if (newUpdates > updates) {
-    //             for (const [k, v] of Object.entries(resources)) {
-    //                 resources[k] += (resourceProduction[k] * (newUpdates-updates));
-    //             }
-    //             updates = newUpdates;
-    //             showResources();
-    //         }
-    //     })
-    // }
     let er = document.getElementById("no_buy");
 
     const resources = {
@@ -84,15 +8,45 @@
         amber: parseInt($('#amber').text())
     };
 
+    function storage_capacity(playerBuildings, resourceType) {
+        let totalCapacity = 0;
+        const baseCapacity = 100; 
+        const capacityIncrease = 200;
+      
+        for (const [buildingName, count] of Object.entries(playerBuildings)) {
+            if ((resourceType === 'gold' && buildingName === 'Gold Storage') ||
+                (resourceType === 'amber' && buildingName === 'Amber Storage') ||
+                (resourceType === 'wood' && buildingName === 'Wood Storage') ||
+                (resourceType === 'stone' && buildingName === 'Stone Storage')) {
+                totalCapacity += capacityIncrease * count;
+            }
+        }
+      
+        return totalCapacity + baseCapacity;
+      }
+      
+      function updateStorageCapacities(playerBuildings) {
+        const goldStorageCapacity = storage_capacity(playerBuildings, 'gold');
+        const woodStorageCapacity = storage_capacity(playerBuildings, 'wood');
+        const stoneStorageCapacity = storage_capacity(playerBuildings, 'stone');
+        const amberStorageCapacity = storage_capacity(playerBuildings, 'amber');
+    
+        $('#goldStorage .storage-capacity').text(goldStorageCapacity);
+        $('#woodStorage .storage-capacity').text(woodStorageCapacity);
+        $('#stoneStorage .storage-capacity').text(stoneStorageCapacity);
+        $('#amberStorage .storage-capacity').text(amberStorageCapacity);
+    }
 
-    async function fetchAndUpdatePlayerData(){
+
+    async function fetchAndUpdatePlayerData() {
         $.ajax({
             url: '/get-player',
             method: 'POST',
-            success: function (playerData){
+            success: function (playerData) {
                 console.log(playerData);
-                updateResources(playerData);
+                updateResources(playerData, playerData.buildings); // Pass playerData.buildings here
                 updateBuildings(playerData.buildings);
+                updateStorageCapacities(playerData.buildings);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error('Error fetching player data:', textStatus, errorThrown);
@@ -101,17 +55,48 @@
     }
 
 
-    function updateResources(playerData) {
-        resources.gold = Math.floor(playerData.gold);
-        resources.wood = Math.floor(playerData.wood);
-        resources.stone = Math.floor(playerData.stone);
-        resources.amber = Math.floor(playerData.amber);
+    function updateResources(playerData, playerBuildings) {
+        const updatedResources = {
+            gold: Math.floor(playerData.gold),
+            wood: Math.floor(playerData.wood),
+            stone: Math.floor(playerData.stone),
+            amber: Math.floor(playerData.amber),
+        };
+    
+        // Get storage capacities from playerBuildings
+        const goldStorageCapacity = storage_capacity(playerBuildings, 'gold');
+        const woodStorageCapacity = storage_capacity(playerBuildings, 'wood');
+        const stoneStorageCapacity = storage_capacity(playerBuildings, 'stone');
+        const amberStorageCapacity = storage_capacity(playerBuildings, 'amber');
+    
+        // Check if resource exceeds storage capacity and limit if necessary
+        if (updatedResources.gold > goldStorageCapacity) {
+            updatedResources.gold = goldStorageCapacity;
+        }
+        if (updatedResources.wood > woodStorageCapacity) {
+            updatedResources.wood = woodStorageCapacity;
+        }
+        if (updatedResources.stone > stoneStorageCapacity) {
+            updatedResources.stone = stoneStorageCapacity;
+        }
+        if (updatedResources.amber > amberStorageCapacity) {
+            updatedResources.amber = amberStorageCapacity;
+        }
+    
+        // Update the resource displays
         er.hidden = true;
-        $('#gold').text(resources.gold);
-        $('#wood').text(resources.wood);
-        $('#stone').text(resources.stone);
-        $('#amber').text(resources.amber);
+        $('#gold').text(updatedResources.gold);
+        $('#wood').text(updatedResources.wood);
+        $('#stone').text(updatedResources.stone);
+        $('#amber').text(updatedResources.amber);
+    
+        // Update the global resources object
+        resources.gold = updatedResources.gold;
+        resources.wood = updatedResources.wood;
+        resources.stone = updatedResources.stone;
+        resources.amber = updatedResources.amber;
     }
+    
 
     function updateBuildings(buildings){
         var buildingsOwnedDiv = $('.buildingsOwned');
@@ -122,6 +107,7 @@
             buildingsOwnedDiv.append(`<div class="buildingRow">${buildingName}: ${count}</div>`);
         }
     }
+    
 
     function handleBuildingAction(action, buildingName){
         $.ajax({
@@ -179,5 +165,3 @@
     
 
 })(window.jQuery);
-
-

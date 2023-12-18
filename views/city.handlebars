@@ -18,6 +18,16 @@
         amber: <span id="amber">{{amber}}</span>
     </p>
 </div>
+<div class="storageCapacity">
+    <p>Storage Capacities:</p>
+    <ul>
+        <li id="goldStorage">Gold Storage: <span class="storage-capacity">{{goldStorageCapacity}}</span></li>
+        <li id="woodStorage">Wood Storage: <span class="storage-capacity">{{woodStorageCapacity}}</span></li>
+        <li id="stoneStorage">Stone Storage: <span class="storage-capacity">{{stoneStorageCapacity}}</span></li>
+        <li id="amberStorage">Amber Storage: <span class="storage-capacity">{{amberStorageCapacity}}</span></li>
+    </ul>
+</div>
+
 <div class="buildingsOwned">
     {{#if (isEmptyObject buildings)}}
         <p id="noBuildingsText">You have no buildings.</p>
@@ -62,16 +72,6 @@
 <button id="destroy-magic-academy">Destroy Magic Academy</button>
 <button id="buy-army-camp">Buy Army Camp</button>
 <button id="destroy-army-camp">Destroy Army Camo</button>
-</div>
-
-<div class="storageCapacity">
-    <p>Storage Capacities:</p>
-    <ul>
-        <li id="goldStorage">Gold Storage: {{goldStorageCapacity}}</li>
-        <li id="woodStorage">Wood Storage: {{woodStorageCapacity}}</li>
-        <li id="stoneStorage">Stone Storage: {{stoneStorageCapacity}}</li>
-        <li id="amberStorage">Amber Storage: {{amberStorageCapacity}}</li>
-    </ul>
 </div>
 <a href="/pvp" class="pvp-button">Go to PvP</a>
 <a href="/report" class="report-button">Report a Player</a>
