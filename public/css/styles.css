@@ -28,22 +28,23 @@ form {
     max-width: 300px;
     margin: 20px auto;
     padding: 20px;
-    background: #fff;
     border-radius: 8px;
+    color: black;
 }
 button {
     display: block;
     width: 100%;
     padding: 10px;
     margin-top: 20px;
-    background: #837569;
-    color: #fff;
+    background: #B6CCA1;
+    color: #000000;
     border: none;
     border-radius: 5px;
   }    
   button:hover{
     cursor: pointer;
 }
+
 .error{
     color: red;
     font-size: 0.8em;
