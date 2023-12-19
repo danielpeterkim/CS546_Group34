@@ -16,198 +16,248 @@
             font-size: 16px;
             transition: background-color 0.3s, color 0.3s;
         }
-        .button:hover {
-            background-color: #373535;
-            color: #fff;
+        .bottom-button{
+            text-align: center;
+        }
+        h1 {
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+        .stats {
+            
+        }
+        .resources {
+            text-align: center;
+            background-color: #776D5A;
+            border-color: black;
+            border-style: solid;
+            border-width: 5px;
+            border-spacing: 0%;
+            padding-left: 0;
+            color: gold;
+        }
+        .building-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        }
+        .btn-build {
+            display: flex;
+        }
+        .btn-build button {
+            margin-left: 10px;
+        }
+        .row{
+            border: 5px solid black;
+            background-color: #776D5A;
+            color: gold;
+        }
+        .center {
+            text-align: center;
+        }
+        .description {
+            margin-left: 10px;
+            color: black;
         }
     </style>
 </head>
 <body>
+    
 <div class="city_buttons">
-    <a href="/options" class="button">Click here to go to the options menu</a>
+    <a href="/options" class="button">Options</a>
     <br>
-    <a href="/tasks" class="button">Click here to view your daily tasks</a>
+    <a href="/tasks" class="button">Tasks</a>
 </div>
 
-<div class="no_buy">
-    <h2 id="no_buy" hidden>Not enough resources</h2>
-</div>
+<h1>Welcome to your City <span id="username">{{username}}</span>!</h1>
 
-<h1>City</h1>
-<p>Welcome, <span id="username">{{username}}</span></p>
-<p>Level: <span id="level">{{level}}</span>, XP: <span id="xp">{{xp}}</span></p>
 <div class="resources">
-    <p id="resourceText">
+<h2 id="stats">Level: <span id="level">{{level}}</span>, XP: <span id="xp">{{xp}}</span></h2>
+
+    <h3 id="resourceText">
         gold: <span id="gold">{{gold}}</span>,
         wood: <span id="wood">{{wood}}</span>,
         stone: <span id="stone">{{stone}}</span>,
         amber: <span id="amber">{{amber}}</span>
-    </p>
-</div>
-<div class="storageCapacity">
-    <p>Storage Capacities:</p>
-    <ul>
-        <li id="goldStorage">Gold Storage: <span class="storage-capacity">{{goldStorageCapacity}}</span></li>
-        <li id="woodStorage">Wood Storage: <span class="storage-capacity">{{woodStorageCapacity}}</span></li>
-        <li id="stoneStorage">Stone Storage: <span class="storage-capacity">{{stoneStorageCapacity}}</span></li>
-        <li id="amberStorage">Amber Storage: <span class="storage-capacity">{{amberStorageCapacity}}</span></li>
-    </ul>
+    </h3>
+        <p id="goldStorage">Gold Storage: <span class="storage-capacity">{{goldStorageCapacity}}</span></p>
+        <p id="woodStorage">Wood Storage: <span class="storage-capacity">{{woodStorageCapacity}}</span></p>
+        <p id="stoneStorage">Stone Storage: <span class="storage-capacity">{{stoneStorageCapacity}}</span></p>
+        <p id="amberStorage">Amber Storage: <span class="storage-capacity">{{amberStorageCapacity}}</span></p>
+
+    <div class="no_buy">
+    <h2 id="no_buy" hidden>Not enough resources!</h2>
+    </div>
 </div>
 
-<div class = "row">
-    <div class="column">
-        <div id="buildings" class = "row">
-            <div class = "column">
-                <p>Gold Generator</p>
-                <div class="row">
-                    <div class = "btn-build">
-                        <div class="column"> 
-                            <button id="destroy-gold-generator">-</button>
-                        </div>
-                        <div class="column">
-                            <button id="buy-gold-generator">+</button>
-                        </div>    
-                    </div> 
-                </div>
-                <p>Wood Generator</p>
-                <div class="row">
-                    <div class = "btn-build">
-                        <div class="column"> 
-                            <button id="destroy-wood-generator">-</button>
-                        </div>
-                        <div class="column">
-                            <button id="buy-wood-generator">+</button>
-                        </div>    
-                    </div> 
-                </div>
-                <p>Stone Generator</p>
-                <div class="row">
-                    <div class = "btn-build">
-                        <div class="column"> 
-                            <button id="destroy-stone-generator">-</button>
-                        </div>
-                        <div class="column">
-                            <button id="buy-stone-generator">+</button>
-                        </div>
-                    </div>    
-                </div> 
-                <p>Amber Generator</p>
-                <div class="row">
-                    <div class = "btn-build">
-                        <div class="column"> 
-                            <button id="destroy-amber-generator">-</button>
-                        </div>
-                        <div class="column">
-                            <button id="buy-amber-generator">+</button>
-                        </div>    
-                    </div> 
-                </div>
-                <p>Archer Tower</p>
-                <div class="row">
-                    <div class = "btn-build">
-                        <div class="column"> 
-                            <button id="destroy-archer-tower">-</button>
-                        </div>
-                        <div class="column">
-                            <button id="buy-archer-tower">+</button>
-                        </div>    
-                    </div> 
-                </div>
-                <p>Spell Tower</p>
-                <div class="row">
-                    <div class = "btn-build">
-                        <div class="column"> 
-                            <button id="destroy-spell-tower">-</button>
-                        </div>
-                        <div class="column">
-                            <button id="buy-spell-tower">+</button>
-                        </div>    
-                    </div> 
-                </div>
-                <p>Barracks</p>
-                <div class="row">
-                    <div class = "btn-build">
-                        <div class="column"> 
-                            <button id="destroy-barracks">-</button>
-                        </div>
-                        <div class="column">
-                            <button id="buy-barracks">+</button>
-                        </div>    
-                    </div> 
-                </div>
+<div class="row">
+ <div class="column">
+    <div id="buildings" class="row">
+        <h2>Buy Buildings:</h2>
+        <div class="building-container">
+            <p>Gold Generator</p>
+            <div class="btn-build">
+                <button id="destroy-gold-generator">-</button>
+                <button id="buy-gold-generator">+</button>
             </div>
-            <div class = "column">
-                <p>Gold Storage</p>
-                <div class="row">
-                    <div class = "btn-build">
-                        <div class="column"> 
-                            <button id="destroy-gold-storage">-</button>
-                        </div>
-                        <div class="column">
-                            <button id="buy-gold-storage">+</button>
-                        </div>    
-                    </div> 
-                </div>
-                <p>Wood Storage</p>
-                <div class="row">
-                    <div class = "btn-build">
-                        <div class="column"> 
-                            <button id="destroy-wood-storage">-</button>
-                        </div>
-                        <div class="column">
-                            <button id="buy-wood-storage">+</button>
-                        </div>    
-                    </div> 
-                </div>
-                <p>Stone Storage</p>
-                <div class="row">
-                    <div class = "btn-build">
-                        <div class="column"> 
-                            <button id="destroy-stone-storage">-</button>
-                        </div>
-                        <div class="column">
-                            <button id="buy-stone-storage">+</button>
-                        </div>    
-                    </div> 
-                </div>
-                <p>Amber Storage</p>
-                <div class="row">
-                    <div class = "btn-build">
-                        <div class="column"> 
-                            <button id="destroy-amber-storage">-</button>
-                        </div>
-                        <div class="column">
-                            <button id="buy-amber-storage">+</button>
-                        </div>    
-                    </div> 
-                </div>
-                
-                <p>Magic Academy</p>
-                <div class="row">
-                    <div class = "btn-build">
-                        <div class="column"> 
-                            <button id="destroy-magic-academy">-</button>
-                        </div>
-                        <div class="column">
-                            <button id="buy-magic-academy">+</button>
-                        </div>    
-                    </div> 
-                </div>
-                <p>Army Camp</p>
-                <div class="row">
-                    <div class = "btn-build">
-                        <div class="column"> 
-                            <button id="destroy-army-camp">-</button>
-                        </div>
-                        <div class="column">
-                            <button id="buy-army-camp">+</button>
-                        </div>    
-                    </div> 
-                </div>
+        </div>
+
+        <div class="description">
+            <p>Generates 1 gold for your city.</p>
+        </div>
+    
+        <div class="building-container">
+            <p>Wood Generator</p>
+            <div class="btn-build">
+                <button id="destroy-wood-generator">-</button>
+                <button id="buy-wood-generator">+</button>
             </div>
-    </div>  
+        </div>
+
+        <div class="description">
+            <p>Generates 1 wood for your city.</p>
+        </div>
+
+        <div class="building-container">
+            <p>Stone Generator</p>
+            <div class="btn-build">
+                <button id="destroy-stone-generator">-</button>
+                <button id="buy-stone-generator">+</button>
+            </div>
+        </div>
+
+        <div class="description">
+            <p>Generates 1 stone for your city.</p>
+        </div>
+
+        <div class="building-container">
+            <p>Amber Generator</p>
+            <div class="btn-build">
+                <button id="destroy-amber-generator">-</button>
+                <button id="buy-amber-generator">+</button>
+            </div>
+        </div>
+
+        <div class="description">
+            <p>Generates 1 amber for your city.</p>
+        </div>
+
+        <div class="building-container">
+            <p>Gold Storage</p>
+            <div class="btn-build">
+                <button id="destroy-gold-storage">-</button>
+                <button id="buy-gold-storage">+</button>
+            </div>
+        </div>
+        
+        <div class="description">
+            <p>Increase gold storage in your city by 200.</p>
+        </div>
+
+        <div class="building-container">
+            <p>Wood Storage</p>
+            <div class="btn-build">
+                <button id="destroy-wood-storage">-</button>
+                <button id="buy-wood-storage">+</button>
+            </div>
+        </div>
+
+        <div class="description">
+            <p>Increase wood storage in your city by 200.</p>
+        </div>
+
+        <div class="building-container">
+            <p>Stone Storage</p>
+            <div class="btn-build">
+                <button id="destroy-stone-storage">-</button>
+                <button id="buy-stone-storage">+</button>
+            </div>
+        </div>
+
+        <div class="description">
+            <p>Increase stone storage in your city by 200.</p>
+        </div>
+
+        <div class="building-container">
+            <p>Amber Storage</p>
+            <div class="btn-build">
+                <button id="destroy-amber-storage">-</button>
+                <button id="buy-amber-storage">+</button>
+            </div>
+        </div>
+
+        <div class="description">
+            <p>Increase amber storage in your city by 200.</p>
+        </div>
+
+        <div class="building-container">
+            <p>Archer Tower</p>
+            <div class="btn-build">
+                <button id="destroy-archer-tower">-</button>
+                <button id="buy-archer-tower">+</button>
+            </div>
+        </div>
+
+        <div class="description">
+            <p>Increases your chance to unalive unarmored and armored units.</p>
+        </div>
+
+        <div class="building-container">
+            <p>Spell Tower</p>
+            <div class="btn-build">
+                <button id="destroy-spell-tower">-</button>
+                <button id="buy-spell-tower">+</button>
+            </div>
+        </div>
+
+        <div class="description">
+            <p>A powerful tower that will defend your city from tough opponents.</p>
+        </div>
+
+        <div class="building-container">
+            <p>Barracks</p>
+            <div class="btn-build">
+                <button id="destroy-barracks">-</button>
+                <button id="buy-barracks">+</button>
+            </div>
+        </div>
+
+        <div class="description">
+            <p>Train stronger and more lethal troops.</p>
+        </div>
+
+        <div class="building-container">
+            <p>Magic Academy</p>
+            <div class="btn-build">
+                <button id="destroy-magic-academy">-</button>
+                <button id="buy-magic-academy">+</button>
+            </div>
+        </div>
+
+        <div class="description">
+            <p>Train your troops in the arcane and mystery.</p>
+        </div>
+
+        <div class="building-container">
+            <p>Army Camp</p>
+            <div class="btn-build">
+                <button id="destroy-army-camp">-</button>
+                <button id="buy-army-camp">+</button>
+            </div>
+        </div>
+
+        <div class="description">
+            <p>Increase the amount of troops you can deploy in combat.</p>
+        </div>
+
+    </div>
 </div>
     <div class="column">
+        <h2 id="center">Your City Buildings:</h2>
         <div class="buildingsOwned">
             {{#if (isEmptyObject buildings)}}
                 <p id="noBuildingsText">You have no buildings.</p>
@@ -215,7 +265,7 @@
                 {{#each orderedBuildingsList}}
                     {{#if (propertyExists ../buildings @key)}}
                         <div class="buildingRow">
-                            <img src="{{this.icon}}" alt="{{@key}}" />
+                            <img src="{{this.icon}}" alt="{{@key}}">
                             <span>{{@key}}</span>
                             <span>{{this.buildingDescription}}</span>
                             <span>Count: {{lookup ../buildings @key}}</span>
@@ -226,8 +276,10 @@
         </div>
     </div>
 </div>
-<a href="/pvp" class="button" >Go to PvP</a>
+<div class="bottom-button">
 <a href="/leaderboard" class="button">Leaderboard</a>
+<a href="/pvp" class="button" >Go to PvP</a>
+</div>
 
 <script>
     var initialResources = {
