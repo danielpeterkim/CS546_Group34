@@ -63,13 +63,11 @@
             amber: Math.min(storage_capacity(playerBuildings, 'amber'), Math.floor(playerData.amber))
         };
     
-        // Get storage capacities from playerBuildings
         const goldStorageCapacity = storage_capacity(playerBuildings, 'gold');
         const woodStorageCapacity = storage_capacity(playerBuildings, 'wood');
         const stoneStorageCapacity = storage_capacity(playerBuildings, 'stone');
         const amberStorageCapacity = storage_capacity(playerBuildings, 'amber');
     
-        // Check if resource exceeds storage capacity and limit if necessary
         if (updatedResources.gold > goldStorageCapacity) {
             updatedResources.gold = goldStorageCapacity;
         }
@@ -83,13 +81,11 @@
             updatedResources.amber = amberStorageCapacity;
         }
     
-        // Update the resource displays
         $('#gold').text(updatedResources.gold);
         $('#wood').text(updatedResources.wood);
         $('#stone').text(updatedResources.stone);
         $('#amber').text(updatedResources.amber);
     
-        // Update the global resources object
         resources.gold = updatedResources.gold;
         resources.wood = updatedResources.wood;
         resources.stone = updatedResources.stone;
@@ -159,9 +155,5 @@
         $('#destroy-army-camp').click(function () { handleBuildingAction('destroy-building', 'Army Camp'); });
         setInterval(fetchAndUpdatePlayerData, 100); 
     });
-    
-
-    
-    
 
 })(window.jQuery);

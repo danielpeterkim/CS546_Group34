@@ -3,14 +3,15 @@ body {
     font-family: 'Exo 2', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #B6CCA1;
 }
 .tasks{
     text-align: center;
+    background-color: #B6CCA1;
 }
 
 header {
-    background: #333;
+    background: #16262E;
     color: #fff;
     padding: 10px 0;
     text-align: center;
@@ -19,29 +20,31 @@ footer {
   text-align: center;
   margin-top: 50px;
   padding: 20px 0;
-  background: #333;
+  background: #16262E;
   color: #fff;
+  position: relative;
 }
 form {
     max-width: 300px;
     margin: 20px auto;
     padding: 20px;
-    background: #fff;
     border-radius: 8px;
+    color: black;
 }
 button {
     display: block;
     width: 100%;
     padding: 10px;
     margin-top: 20px;
-    background: #333;
-    color: #fff;
+    background: #B6CCA1;
+    color: #000000;
     border: none;
     border-radius: 5px;
   }    
   button:hover{
     cursor: pointer;
 }
+
 .error{
     color: red;
     font-size: 0.8em;
@@ -57,12 +60,6 @@ form label {
     font-weight: bold;
 }
 
-.buildings {
-    border: black 1px solid;
-    padding: 10px;
-    border-radius: 5px;
-}
-
 .no-buildings {
     border: black 1px solid;
     padding: 10px;
@@ -75,7 +72,8 @@ form label {
 }
 
 .buildingsOwned {
-    border: black 5px solid;
+    color: gold;
+    background-color: #776D5A;
     padding: 20px;
     border-radius: 5px;
 }
@@ -85,7 +83,8 @@ form label {
     width: 25%;
 }
 .no_buy{
-    color:red
+    color:red;
+
 }
 
 .buildingRow {
